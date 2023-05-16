@@ -1,0 +1,59 @@
+#SingleInstance Force
+
+TeleScreen="|<>0x777673@0.85$71.3zzzkTskDm1y7zzzVztlTU3wDzzzHzlWT07sTzzybzk0y0DkzzztDzU1s0TU000000000000000000000800000E00001k00000000027w07k1nU000s000Ds1X01U1k000Tk3a0303U000lU7g0D070001r0Ds0S0C0002q0JE02040007s0rU3w0M000Ak1b07w1k000Rk3C0Ts3w000vUCQ1ks7s0000000000000000000000000000000000000000000000000TzzyDzzzzzzzzzzwTzzzzzzzzzzszzzzzzzzzzzlzzzzzzzzzzzbzzzzzzzzzzzDzzzzzzzk|<>0x6B7477@0.83$71.zk2Dz4MTk07UDUATwAEy00S0D0sTsM1k01s0C1kzVs3U07U0S3Xz3k700SDUw67yDUC01kz0sACMPUQ0D3y0kMM0r0s0wC000kU371s7ks001U06C3kT3U00708AS7XwC000C0ksQDDkQ000Q1VUsTz1s01sw731szw3U0TlsC63lzk7U7zXssQ3nz0D0Dy7tks7Xz0S00QCzVsD7T0w00stz3zyCS1s03llyCzwQS3k07XXwM1wsS3U0D73sk3tkQ7U0wA7X03nUw701sM7607b0w707lkC80D60s7UT30AEMDA1s7wk00M1kSM1s7v3s003kQk1k1C1w00DUsU0E0E"
+
+
+Start:="|<>*156$25.S801/A01YDSTvX9AMtXqA6rP6nPRXDCyls"
+Check:="|<>*94$70.00220U00000U00802000000DzsUbRnkzYr9U0W2EhdXPHEi0289myaBhBms08UVf2MqolfU0XuQr9XPTQa02000000000808000000000U0U00000000202000000000808w002003U0U0WM00800/02029iwxrCsVtDzswmOOqknYo0022NdfuD3nE0088aag9hhB000UXmPQXnbbU"
+
+fullScriptPath = %A_ScriptDir%\FernMVPv6.ahk  ; edit with your full script path
+
+
+TeleToNextMap:
+		While (!ok:=FindText(391-150000//2, 298-150000//2, 150000, 150000, 0, 0, TeleScreen)) 
+		{
+		}
+{
+        DetectHiddenWindows, On 
+        WinClose, %fullScriptPath% ahk_class AutoHotkey
+		WinActivate, BlueStacks
+		Sleep 8000
+		Send M
+		Sleep 1000
+		Send 4
+		Sleep 1000
+		Send {Numpad6}
+		Sleep 1000
+		Send H
+		Sleep 10000
+		Send M
+		Sleep 1000
+		Send L
+		Sleep 1000
+		Send M
+		MVPTele :=0
+		FlyTime :=0
+		Run %fullScriptPath% ahk_class AutoHotkey
+		sleep 1000
+		send {space}
+		sleep 1000
+		While (!ok:=FindText(602-150000//2, 298-150000//2, 150000, 150000, 0, 0, Check))
+			{
+			}
+			{
+			CoordMode, Mouse
+			X:=ok.1.1, Y:=ok.1.2, W:=ok.1.3, H:=ok.1.4, Comment:=ok.1.5, X+=W//2, Y+=H//2
+			Click, %X%, %Y%
+			}
+		sleep 1000
+		if (ok:=FindText(602-150000//2, 298-150000//2, 150000, 150000, 0, 0, start))
+			{
+			CoordMode, Mouse
+			X:=ok.1.1, Y:=ok.1.2, W:=ok.1.3, H:=ok.1.4, Comment:=ok.1.5, X+=W//2, Y+=H//2
+			Click, %X%, %Y%
+			}
+		WinActivate, BlueStacks
+}
+
+	
+Reload
