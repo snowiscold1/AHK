@@ -9,7 +9,7 @@ DetectHiddenWindows, On
 SetTitleMatchMode, 3
 
 WinGet, Title4ID, ID, %Title4%
-
+global oArrayText := []
 WaitingTime=0
 jumpa=0
 kenascroll = 0
@@ -714,38 +714,46 @@ Tip(s:="") {
 
 
 
+log(msg) {
+    global oArrayText
+    Critical, On
+    try {
+        sendError(msg)
+        FormatTime, TimeString, A_Now, yyyyMMdd HH:mm:ss
+        controlgettext, Console, Edit2, Fern Bot ahk_class AutoHotkeyGUI
 
-log(msg){
-	global
-	FormatTime, TimeString, A_Now, yyyyMMdd HH:mm:ss  ; 
-	controlgettext, Console, Edit2, Fern Bot ahk_class AutoHotkeyGUI
-	
-	static oArrayText := [] 
-	Loop, parse, Console, `n, `r  ; Specifying `n prior to `r allows both Windows and Unix files to be parsed.
-{
-	i++
-	nc:= TF_ReadLines(Console,A_Index,A_Index,1)
-	oArrayText.push(nc)
+        Loop, parse, Console, `n, `r
+        {
+            i++
+            nc := TF_ReadLines(Console, A_Index, A_Index, 1)
+            oArrayText.push(nc)
+            if (i >= 100)
+                break
+        }
 
-	if (i>=100)
-		break
+        str := ""
+        for each, line in oArrayText
+        {
+            If (str <> "") ; str is not empty, so add a line feed
+                str .= "`r`n"
+            str .= line
+        }
+
+        logEntry := TimeString " - " msg
+        str := logEntry "`r`n" str
+
+        controlsettext, Edit2, %str%, Fern Bot ahk_class AutoHotkeyGUI
+
+        if oArrayText.MinIndex() != ""  ; Not empty.
+            oArrayText.Delete(oArrayText.MinIndex(), oArrayText.MaxIndex())
+
+        Critical, Off
+        return
+    }
+    catch e {
+        return
+    }
 }
-
-	str := "" 
-	for each, line in oArrayText
-	{
-		If (str <> "") ; str is not empty, so add a line feed
-		str .= "`r`n"
-		str .= line
-	}
-	
-	controlsettext, Edit2, %TimeString% - %msg%`r`n%str%, Fern Bot ahk_class AutoHotkeyGUI
-	sendError(msg)
-	if oArrayText.MinIndex() != ""  ; Not empty.
-    oArrayText.Delete(oArrayText.MinIndex(), oArrayText.MaxIndex())
-	return
-}
-
 sendError(msg){
 ComObjError(false)
 	url:="https://discord.com/api/webhooks/950759671063515136/xVk8HNfLk3RTrXgTKHcO5AXilpOWitLIuQy6xXuzL7RfeXn2dW6R-ImtLStZKcMqt-Za"

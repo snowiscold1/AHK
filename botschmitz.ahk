@@ -28,7 +28,7 @@ IniWrite, 0,%A_ScriptDir%\pos.ini, Backup, SuperFarmState:
 IniWrite, 0,%A_ScriptDir%\pos.ini, Backup, Stop:
 WaitingTime = 0
 runonce := 0
-
+global oArrayText := []
 ;~ FileAppend, %CountNumb%`n, %A_ScriptDir%\log.txt
 
 SetTitleMatchMode, 2
@@ -1113,39 +1113,47 @@ GroupBox(GBvName			;Name for GroupBox control variable
 	return
 }
 
-log(msg){
-	
-	global
-	Critical, On
-	FormatTime, TimeString, A_Now, yyyyMMdd HH:mm:ss  ; 
-	controlgettext, Console, Edit2, Fern Bot ahk_class AutoHotkeyGUI
-	
-	static oArrayText := [] 
-	Loop, parse, Console, `n, `r  ; Specifying `n prior to `r allows both Windows and Unix files to be parsed.
-{
-	i++
-	nc:= TF_ReadLines(Console,A_Index,A_Index,1)
-	oArrayText.push(nc)
+log(msg) {
+    global oArrayText
+    Critical, On
+    try {
+        sendError(msg)
+        FormatTime, TimeString, A_Now, yyyyMMdd HH:mm:ss
+        controlgettext, Console, Edit2, Fern Bot ahk_class AutoHotkeyGUI
 
-	if (i>=100)
-		break
+        Loop, parse, Console, `n, `r
+        {
+            i++
+            nc := TF_ReadLines(Console, A_Index, A_Index, 1)
+            oArrayText.push(nc)
+            if (i >= 100)
+                break
+        }
+
+        str := ""
+        for each, line in oArrayText
+        {
+            If (str <> "") ; str is not empty, so add a line feed
+                str .= "`r`n"
+            str .= line
+        }
+
+        logEntry := TimeString " - " msg
+        str := logEntry "`r`n" str
+
+        controlsettext, Edit2, %str%, Fern Bot ahk_class AutoHotkeyGUI
+
+        if oArrayText.MinIndex() != ""  ; Not empty.
+            oArrayText.Delete(oArrayText.MinIndex(), oArrayText.MaxIndex())
+
+        Critical, Off
+        return
+    }
+    catch e {
+        return
+    }
 }
 
-	str := "" 
-	for each, line in oArrayText
-	{
-		If (str <> "") ; str is not empty, so add a line feed
-		str .= "`r`n"
-		str .= line
-	}
-	
-	controlsettext, Edit2, %TimeString% - %msg%`r`n%str%, Fern Bot ahk_class AutoHotkeyGUI
-	sendError(msg)
-	if oArrayText.MinIndex() != ""  ; Not empty.
-    oArrayText.Delete(oArrayText.MinIndex(), oArrayText.MaxIndex())
-	Critical, Off
-	return
-}
 
 sendError(msg){
 	ComObjError(false)
@@ -1949,10 +1957,13 @@ if (nextspawn < 2400000) {
 	if (AutoSwapSpot == 1) {
 		determinespot()
 		gosub resetlogpos
+		IniWrite, 1,%A_ScriptDir%\pos.ini, Backup, Stop:
 		WinClose, %backup% ahk_class AutoHotkey
 		WinClose, %backup2% ahk_class AutoHotkey
 		WinClose, %backup3% ahk_class AutoHotkey
-				
+		run %backup% ahk_class AutoHotkeylog
+		run %backup2% ahk_class AutoHotkeylog	
+		run %backup3% ahk_class AutoHotkeylog		
 			current_hour = %A_hour%
 			target_hour = % (current_hour+1)
 			target_time = %target_hour%00
@@ -1970,8 +1981,7 @@ if (nextspawn < 2400000) {
 			nextspawn := target * 1000 
 			nextspawninmin := (nextspawn/1000)/60
 		}		
-		sleep % nextspawn
-		
+		sleep % nextspawn	
 }
 else 
 {
