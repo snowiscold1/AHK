@@ -29,8 +29,6 @@ IniWrite, 0,%A_ScriptDir%\pos.ini, Backup, Stop:
 WaitingTime = 0
 runonce := 0
 
-
-
 ;~ FileAppend, %CountNumb%`n, %A_ScriptDir%\log.txt
 
 SetTitleMatchMode, 2
@@ -50,7 +48,7 @@ if gui_position = x y
 
 GBTHeight:=10
 Gui,1: +LastFound +AlwaysOnTop
-Gui,1: New, -Resize -MaximizeBox -MinimizeBox , Automated Channel Finder by Fern
+Gui,1: New, -Resize -MaximizeBox , Automated Channel Finder by Fern
 Gui,1: Add, Text, vLabel1, Country
 Gui,1: Add, Text, x162 yMargin vLabel2, Number
 Gui,1: Add, DropDownList, Section xMargin vCountry Choose1 ,EN|TH|PH|ID|CN|VN
@@ -87,11 +85,11 @@ Gui,1: Font, Bold
 Gui, 1: Add, Button, Section x8 w58 gresetlogpos, RESET
 Gui,1: Font, Normal
 Gui, 1: Add, Button, ys x+8 w58 gtimeStart, AutoStart
-Gui, 1: Add, Button, ys x+8 w58 gClearLog, Clear Log
+Gui,1: Add, Button, ys x+8 w58 gClearLog, ClearLog
 Gui,1: Font, Bold
 Gui, 1: Add, Button, ys x+8 w58 gESC, RELOAD
 Gui, 1: Font, Normal
-GroupBox("GB6", "Extras", GBTHeight, 10, "RESET|AutoStart|Clear Log|RELOAD")
+GroupBox("GB6", "Extras", GBTHeight, 10, "RESET|AutoStart|ClearLog|RELOAD")
 
 Gui,1: Show, %gui_position%, Fern Bot
 Gui,1: +Hwndgui_id
@@ -235,8 +233,6 @@ else
 		
 	}
 return
-
-
 
 
 Start:
@@ -1950,7 +1946,32 @@ goto checkavatarexist
 
 
 if (nextspawn < 2400000) {
-	sleep % nextspawn
+	if (AutoSwapSpot == 1) {
+		determinespot()
+		gosub resetlogpos
+		WinClose, %backup% ahk_class AutoHotkey
+		WinClose, %backup2% ahk_class AutoHotkey
+		WinClose, %backup3% ahk_class AutoHotkey
+				
+			current_hour = %A_hour%
+			target_hour = % (current_hour+1)
+			target_time = %target_hour%00
+			if (target_time = 2400)
+			{
+				target_time = 0000
+			}
+			converted := SubStr("000" . target_time, -3)
+			target = %A_YYYY%%A_MM%%A_DD%%converted%00
+			if (converted = 0000)
+			{
+			EnvAdd, target, 1, d
+			}
+			EnvSub, target, %A_Now%, Seconds.
+			nextspawn := target * 1000 
+			nextspawninmin := (nextspawn/1000)/60
+		}		
+		sleep % nextspawn
+		
 }
 else 
 {
@@ -2067,4 +2088,5 @@ return
 ESC:: 
 WinGetPos, gui_x, gui_y,,, ahk_id %gui_id%
 IniWrite, x%gui_x% y%gui_y%,%A_ScriptDir%\pos.ini, window position, gui_position
+IniWrite, 1,%A_ScriptDir%\pos.ini, Backup, Stop:
 Reload
