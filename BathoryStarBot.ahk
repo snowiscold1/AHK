@@ -16,11 +16,12 @@
 Version := "16"
 
 
-Title:= "BlueStacks"
+Title:= "nurse"
+Title2:= "ADEL"
 WinGet, TitleID, ID, %Title%
-
+WinGet, Title2ID, ID, %Title2%
 WinMove, %Title%,,0,0, 533, 331
-
+WinMove, %Title2%,,533,0, 533, 331
 DetectHiddenWindows, On
 SetTitleMatchMode, 2
 

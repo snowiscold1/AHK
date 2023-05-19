@@ -26,7 +26,7 @@ sleep, %nextspawn%
 gosub deletelog
 #Persistent
 setTimer, deletelog, 3600000
-
+setTimer, checkHour, 60000
 
 
 return
@@ -41,19 +41,17 @@ return
 
 
 deletelog:
+    FileDelete, %A_ScriptDir%\log.txt
+    FileDelete, %A_ScriptDir%\botschmitz_zahey\log.txt
+    FileDelete, %A_ScriptDir%\botschmitz_zahey\log2.txt
+    FileDelete, %A_ScriptDir%\botschmitz12oc\log.txt
+return
 
-FileDelete, %A_ScriptDir%\log.txt
-FileDelete, %A_ScriptDir%\botschmitz_zahey\log.txt
-FileDelete, %A_ScriptDir%\botschmitz_zahey\log2.txt
-FileDelete, %A_ScriptDir%\botschmitz12oc\log.txt
-
-
-if (A_Hour = 06 )
-{
-IniWrite, 0,%A_ScriptDir%\pos.ini, Music, prevamt:
-IniWrite, 0,C:\Users\snowi\Desktop\AHK\botschmitz_client\pos.ini, Music, prevamt:
-IniWrite, 0,C:\Users\snowi\Desktop\AHK\botschmitz_client\pos.ini, Music, prevamt:
-}
-
-
+checkHour:
+    if (A_Hour = 6)
+    {
+        IniWrite, 0, %A_ScriptDir%\pos.ini, Music, prevamt
+        IniWrite, 0, C:\Users\snowi\Desktop\AHK\botschmitz_client\pos.ini, Music, prevamt
+        IniWrite, 0, C:\Users\snowi\Desktop\AHK\botschmitz_client\pos.ini, Music, prevamt
+    }
 return

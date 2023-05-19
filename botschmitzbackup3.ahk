@@ -393,6 +393,7 @@ random,randY, %spawnY%, %spawny%+1
 				CoordMode, Mouse
 				X:=ok.1.x-(533), Y:=ok.1.y-(331), Comment:=ok.1.id
 				ControlClick, x%x% y%y%, %Title5%,, LEFT, 1, NA
+				sleep 1000
 }
 			sleep 1000
 			goto checkavatarexist

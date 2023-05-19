@@ -1,7 +1,10 @@
 #SingleInstance Force
 char:= "snowiscold1"
 SetControlDelay, -1
+
+Menu, Tray, Icon, %A_ScriptDir%\dopple.ico
 Title := "nurse"
+kill := 0
 WinGet, TitleID, ID, %Title%
 worldmap :=[284, 547, 334, 573,"|<>**50$14.0HUCM2b0NU6mR8bm9wXXgQRt1O"]
 atkon:=[494, 584, 526, 616,"|<>**50$17.kQ7UECU0t01D07rUQa0FU050UG20g60E00U"]
@@ -32,62 +35,63 @@ while(ok:=FindText(closemob[1], closemob[2], closemob[3], closemob[4], 0, 0, clo
 				ControlClick, x474 y137, %Title%,, LEFT, 1, NA ; close atk menu
 				sleep 500
 }
-ControlClick, x448 y55, %Title%,, LEFT, 1, NA ; close map
-sleep 500
+
 gosub summon
-sleep 120000
+kill++
+gosub waitmvpdie
 goto queing
+
 return
-
-
-
-
-preparation:
-FindText_BindWindow(TitleID)
-
-while(!ok:=FindText(closemob[1], closemob[2], closemob[3], closemob[4], 0, 0, closemob[5]))
-{
-		ControlClick, x508 y270, %Title%,, LEFT, 1, NA ; atk button again kalau tak klua
-		sleep 500
-}
-FindText_BindWindow(TitleID)
-while(!ok:=FindText(stayalertchecked[1], stayalertchecked[2], stayalertchecked[3], stayalertchecked[4], 0, 0, stayalertchecked[5]))
-{
-				ControlClick, x431 y245, %Title%,, LEFT, 1, NA ; stay alert button
-				sleep 500
-}
-ControlClick, x374 y163, %Title%,, LEFT, 1, NA ; atk all
-sleep 500
-FindText_BindWindow(TitleID)
-while(ok:=FindText(closemob[1], closemob[2], closemob[3], closemob[4], 0, 0, closemob[5]))
-{
-				ControlClick, x474 y137, %Title%,, LEFT, 1, NA ; close atk menu
-				sleep 500
-}
-
+^k::
+Msgbox, You have killed %kill% MVPs
 return
 
 summon:
-ControlClick, x250 y192, %Title%,, LEFT, 1, NA ; kill
 gosub openmap
 ControlClick, x362 y149, %Title%,, LEFT, 1, NA ; 1st kill
-sleep 5000
-ControlClick, x473 y307, %Title%,, LEFT, 1, NA ; atkslot
-sleep 3000
+sleep 1000
+ControlClick, x441 y305, %Title%,, LEFT, 1, NA ; ground skill 2nd slot
+sleep 1000
+ControlClick, x258 y208, %Title%,, LEFT, 1, NA ; place groundskill
+;ControlClick, x362 y149, %Title%,, LEFT, 1, NA ; 1st kill
+sleep 1000
 ControlClick, x363 y159, %Title%,, LEFT, 1, NA ; 2nd kill
 sleep 5000
-ControlClick, x473 y307, %Title%,, LEFT, 1, NA ; atkslot
-sleep 3000
+ControlClick, x441 y305, %Title%,, LEFT, 1, NA ; ground skill 2nd slot
+sleep 1000
+ControlClick, x258 y208, %Title%,, LEFT, 1, NA ; place groundskill
+sleep 1000
 ControlClick, x367 y156, %Title%,, LEFT, 1, NA ; 3rd kill
 sleep 5000
-ControlClick, x473 y307, %Title%,, LEFT, 1, NA ; atkslot
-sleep 3000
+ControlClick, x441 y305, %Title%,, LEFT, 1, NA ; ground skill 2nd slot
+sleep 1000
+ControlClick, x258 y208, %Title%,, LEFT, 1, NA ; place groundskill
+sleep 1000
 ControlClick, x358 y153, %Title%,, LEFT, 1, NA ; 4th kill
 sleep 5000
-ControlClick, x473 y307, %Title%,, LEFT, 1, NA ; atkslot
-sleep 3000
-
+ControlClick, x441 y305, %Title%,, LEFT, 1, NA ; ground skill 2nd slot
+sleep 1000
+ControlClick, x258 y208, %Title%,, LEFT, 1, NA ; place groundskill
+sleep 120000
 return
+
+waitmvpdie:
+while(ok:=FindText(atkon[1], atkon[2], atkon[3], atkon[4], 0, 0, atkon[5]))
+{
+				ControlClick, x508 y270, %Title%,, LEFT, 1, NA ; atk button again kalau tak klua
+				sleep 2000
+}
+while(!ok:=FindText(closemob[1], closemob[2], closemob[3], closemob[4], 0, 0, closemob[5]))
+{
+				ControlClick, x508 y270, %Title%,, LEFT, 1, NA ; atk button again kalau tak klua
+				sleep 2000
+}
+while(ok:=FindText(mvp[1], mvp[2], mvp[3], mvp[4], 0, 0, mvp[5]))
+{
+	sleep 1000
+}
+return
+
 
 openmap:
 FindText_BindWindow(TitleID)
@@ -96,40 +100,7 @@ while(!ok:=FindText(worldmap[1], worldmap[2], worldmap[3], worldmap[4], 0, 0, wo
 ControlClick, x498 y75, %Title%,, LEFT, 1, NA
 sleep 1000
 }
+
 return
 
-killmvp:
-if (ok:=FindText(atkon[1],atkon[2],atkon[3],atkon[4], 0, 0, atkon[5]))
-{
-	ControlClick, x508 y270, %Title%,, LEFT, 1, NA ; atk button cancelkan dulu
-	sleep 1000
-}
-ControlClick, x508 y270, %Title%,, LEFT, 1, NA ; atk button
-sleep 1000
-while(!ok:=FindText(closemob[1], closemob[2], closemob[3], closemob[4], 0, 0, closemob[5]))
-{
-				ControlClick, x508 y270, %Title%,, LEFT, 1, NA ; atk button again kalau tak klua
-				sleep 2000
-}
-while(ok:=FindText(stayalertchecked[1], stayalertchecked[2], stayalertchecked[3], stayalertchecked[4], 0, 0, stayalertchecked[5]))
-{
-				ControlClick, x431 y245, %Title%,, LEFT, 1, NA ; stay alert button
-				sleep 2000
-}
-while(!ok:=FindText(mvp[1], mvp[2], mvp[3], mvp[4], 0, 0, mvp[5]))
-{
-}
-{
-				CoordMode, Mouse
-				X:=ok.1.x, Y:=ok.1.y-(331), Comment:=ok.1.id
-				ControlClick, x%x% y%y%, %Title%,, LEFT, 1, NA
-				sleep 500
-}
-while(ok:=FindText(closemob[1], closemob[2], closemob[3], closemob[4], 0, 0, closemob[5]))
-{
-				CoordMode, Mouse
-				X:=ok.1.x, Y:=ok.1.y-(331), Comment:=ok.1.id
-				ControlClick, x%x% y%y%, %Title%,, LEFT, 1, NA
-				sleep 500
-}
-return
+

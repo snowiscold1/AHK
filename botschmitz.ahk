@@ -29,18 +29,6 @@ IniWrite, 0,%A_ScriptDir%\pos.ini, Backup, Stop:
 WaitingTime = 0
 runonce := 0
 global oArrayText := []
-;~ FileAppend, %CountNumb%`n, %A_ScriptDir%\log.txt
-
-SetTitleMatchMode, 2
-IfWinNotExist, %check% ahk_class AutoHotkey
-{
-run %check% ahk_class AutoHotkey
-}
-IfWinNotExist, %deletelog% ahk_class AutoHotkey
-{
-run %deletelog% ahk_class AutoHotkey
-}
-
 
 IniRead, gui_position, %A_ScriptDir%\pos.ini, window position, gui_position, Center
 if gui_position = x y
@@ -237,6 +225,15 @@ return
 
 Start:
 
+SetTitleMatchMode, 2
+IfWinNotExist, %check% ahk_class AutoHotkey
+{
+run %check% ahk_class AutoHotkey
+}
+IfWinNotExist, %deletelog% ahk_class AutoHotkey
+{
+run %deletelog% ahk_class AutoHotkey
+}
 		
 Gui,2: +AlwaysOnTop +ToolWindow -SysMenu -Caption
 Gui,2: Color, CCCCCC
@@ -1526,48 +1523,60 @@ IniWrite, 0,%A_ScriptDir%\pos.ini, Backup, SuperFarmState:
 log("All channels logs cleared, you may start fresh!")
 log("pos.ini reset, return to default")
 return
-
 Channel:
-FormatTime, TimeString, A_Now, yyyyMMdd HH:mm:ss  ; 
+FormatTime, TimeString, A_Now, yyyyMMdd HH:mm:ss
+
+GuiControlGet, Console, 1: ; Gets current GUI text
+
+; Read and process logfound.txt
 FileRead, content, %A_WorkingDir%\logfound.txt
-loop, parse, Content, `n,`r
-  {
-  x=%a_loopfield%
-  msg .= x . "," . A_Space
-  lines := A_Index-1
-  }
+lines := 0
+msg := ""
+Loop, Parse, content, `n, `r
+{
+    line := Trim(A_LoopField) ; Trim leading/trailing whitespace
+    if (line != "")
+    {
+        lines++
+        msg .= line . "," . A_Space
+    }
+}
+Console := TimeString . " - Current (" . lines . " channels) " . msg . "TOTAL " . lines "`r`n" . Console
+msg := ""
 
-GuiControlGet,Console, 1: ;Gets current GUI text
-GuiControl,1: , Console, %TimeString% - Current %msg% TOTAL %lines%`r`n%Console% ; Appends new msg to the GUI
-msg :=
-lines :=
-
+; Read and process logfoundbackup.txt
 FileRead, content, %A_WorkingDir%\logfoundbackup.txt
-loop, parse, Content, `n,`r
-  {
-  x=%a_loopfield%
-  msg .= x . "," . A_Space
-  lines := A_Index-1
-  }
+lines := 0
+Loop, Parse, content, `n, `r
+{
+    line := Trim(A_LoopField) ; Trim leading/trailing whitespace
+    if (line != "")
+    {
+        lines++
+        msg .= line . "," . A_Space
+    }
+}
+Console := TimeString . " - Backup (" . lines . " channels) " . msg . "TOTAL " . lines "`r`n" . Console
+msg := ""
 
-GuiControlGet,Console, 1: ;Gets current GUI text
-GuiControl,1: , Console, %TimeString% - Backup %msg% TOTAL %lines%`r`n%Console% ; Appends new msg to the GUI
-msg :=
-lines :=
-
+; Read and process logfoundbackup2.txt
 FileRead, content, %A_WorkingDir%\logfoundbackup2.txt
-loop, parse, Content, `n,`r
-  {
-  x=%a_loopfield%
-  msg .= x . "," . A_Space
-  lines := A_Index-1
-  }
+lines := 0
+Loop, Parse, content, `n, `r
+{
+    line := Trim(A_LoopField) ; Trim leading/trailing whitespace
+    if (line != "")
+    {
+        lines++
+        msg .= line . "," . A_Space
+    }
+}
+Console := TimeString . " - Backup2 (" . lines . " channels) " . msg . "TOTAL " . lines "`r`n" . Console
 
-GuiControlGet,Console, 1: ;Gets current GUI text
-GuiControl,1: , Console, %TimeString% - Backup2 %msg% TOTAL %lines%`r`n%Console% ; Appends new msg to the GUI
-msg :=
-lines :=
+GuiControl, 1:, Console, %Console% ; Update the GUI with the modified console content
+
 return
+
 
 AHKPanic(Kill=0, Pause=0, Suspend=0, SelfToo=0) {
 DetectHiddenWindows, On
