@@ -28,7 +28,12 @@ while(!ok:=FindText(closemob[1], closemob[2], closemob[3], closemob[4], 0, 0, cl
 FindText_BindWindow(TitleID)
 while(!ok:=FindText(queing[1], queing[2], queing[3], queing[4], 0, 0, queing[5]))
 {
-	sleep 1000
+	if(!ok:=FindText(closemob[1], closemob[2], closemob[3], closemob[4], 0, 0, closemob[5]))
+	{
+		ControlClick, x508 y270, %Title%,, LEFT, 1, NA ; atk button again kalau tak klua
+		sleep 10000
+	}
+
 }
 while(ok:=FindText(closemob[1], closemob[2], closemob[3], closemob[4], 0, 0, closemob[5]))
 {
@@ -96,7 +101,7 @@ return
 openmap:
 FindText_BindWindow(TitleID)
 while(!ok:=FindText(worldmap[1], worldmap[2], worldmap[3], worldmap[4], 0, 0, worldmap[5]))
-{	
+{
 ControlClick, x498 y75, %Title%,, LEFT, 1, NA
 sleep 1000
 }

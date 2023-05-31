@@ -1,27 +1,32 @@
 ;remake of the  old version for rom may 2023
 Version := "1"
-
-
-global Title := "nurse"
-global Title2:= "SoulSlayers"
+#SingleInstance Force
+Menu, Tray, Icon, %A_ScriptDir%\fuel.ico
+Menu, Tray, NoStandard
+Menu, Tray, Color, red
+global Title := "nurse" ; mainchar
+global Title2:= "asd" ; dummy spawners
 WinGet, TitleID, ID, %Title%
 WinGet, Title2ID, ID, %Title2%
 WinMove, %Title%,,0,0, 533, 331
 WinMove, %Title2%,,533,0, 533, 331
+Menu, Tray, Icon, %A_ScriptDir%\fuel.ico
 DetectHiddenWindows, On
 SetTitleMatchMode, 2
 fuel := 0
 branch := 0
 
-#SingleInstance Force
-;Menu, Tray, Icon, shell32.dll, 44
-;Menu, Tray, NoStandard
-;Menu, Tray, Color, red
+atkon:=[209, 440, 315, 484,"|<>**50$17.kQ7UECU0t01D07rUQa0FU050UG20g60E00U"]
+cameramenu:=[420, 122, 448, 144,"|<>0xF2FFFE@0.94$14.lzzzb0sk6MtySTbbslz0zwzzzy"]
+camerashutter:=[473, 269, 501, 301,"|<>0xFFF7B9@0.94$17.TzWsD5UDPCDySTtwztty0000E4"]
+fueldrop:=[226, 122, 288, 172,"|<>0xDDDCE1@0.94$29.U00k0V2U8IE40G0h/0K01000E"] ; ikut mainchar
+
+
 #NoEnv
 IniRead, gui_position, %A_ScriptFullPath%:Stream:$DATA, window position, gui_position, Center
 if gui_position = x y
 	gui_position = x772 y315
-Gui New, -Resize -MaximizeBox -MinimizeBox , Automated Channel Finder by Fern
+Gui New, -Resize -MaximizeBox -MinimizeBox , Magic Gear Fuel Bot
 Gui +AlwaysOnTop
 Gui Font, s9 Bold
 Gui, Add, Button, x12 y19 w120 h50 gturnoncamera, Start
@@ -33,13 +38,11 @@ Gui, Add, Edit, x12 w120 -vScroll vFuel number, 0
 Gui, Add, Button, x12 y229 w120 h50 gResetCounter , Reset Counter
 
 
-Gui, Show, w146 h300 %gui_position%, Bathory Event
+Gui, Show, w146 h300 %gui_position%, Magic Gear Fuel Bot
+
 Gui, +Hwndgui_id
 return
-atkon:=[209, 440, 315, 484,"|<>**50$17.kQ7UECU0t01D07rUQa0FU050UG20g60E00U"]
-cameramenu:=[420, 122, 448, 144,"|<>0xF2FFFE@0.94$14.lzzzb0sk6MtySTbbslz0zwzzzy"]
-camerashutter:=[473, 269, 501, 301,"|<>0xFFF7B9@0.94$17.TzWsD5UDPCDySTtwztty0000E4"]
-fueldrop:=[226, 122, 288, 172,"|<>0xDDDCE1@0.94$29.U00k0V2U8IE40G0h/0K01000E"] ; ikut mainchar
+
 
 Gui,2: +AlwaysOnTop +ToolWindow -SysMenu -Caption
 Gui,2: Color, CCCCCC
@@ -53,7 +56,7 @@ WinSet, TransColor, CCCCCC 255,uptime
 #Persistent
 setTimer, fuelcounter, 200
 
-if (!ok := FindText(camerashutter[1], camerashutter[2], camerashutter[3], camerashutter[4], 0, 0, camerashutter[5])) 
+if (!ok := FindText(camerashutter[1], camerashutter[2], camerashutter[3], camerashutter[4], 0, 0, camerashutter[5]))
 {
     gosub turnoncamera
 }
@@ -62,7 +65,7 @@ return
 
 turnoncamera:
 
-if (!ok := FindText(cameramenu[1], cameramenu[2], cameramenu[3], cameramenu[4], 0, 0, cameramenu[5])) 
+if (!ok := FindText(cameramenu[1], cameramenu[2], cameramenu[3], cameramenu[4], 0, 0, cameramenu[5]))
 {
     ClickCoord(445, 56) ; menu
 }
@@ -98,6 +101,7 @@ while (!ok := FindText(camerashutter[1], camerashutter[2], camerashutter[3], cam
 return
 
 fuelcounter:
+fueldrop:= GenerateCoordinate(fueldrop, Title2)
 if (ok := FindText(fueldrop[1], fueldrop[2], fueldrop[3], fueldrop[4], 0, 0, fueldrop[5]))
 {
     fuel += 4
@@ -128,8 +132,8 @@ ClickCoord(x, y, sleep := 500, customTitle := "") {
         TitleToUse := Title
     else
         TitleToUse := customTitle
-        
-    ControlClick, x%x% y%y%, %TitleToUse%,, LEFT, 1, NA 
+
+    ControlClick, x%x% y%y%, %TitleToUse%,, LEFT, 1, NA
     Sleep, %sleep%
     return
 }
@@ -140,11 +144,11 @@ ClickCoordWhenFound(var, coordinateX:="", coordinateY:="", delay:=500, customTit
         TitleToUse := Title
     else
         TitleToUse := customTitle
-        
+
     while !(ok := FindText(var[1], var[2], var[3], var[4], 0, 0, var[5])) {
         Sleep, 100
     }
-    
+
     X := ok.1.x
     Y := ok.1.y
     WinGetPos, WinX, WinY, WinWidth, WinHeight, %TitleToUse%
@@ -159,6 +163,47 @@ ClickCoordWhenFound(var, coordinateX:="", coordinateY:="", delay:=500, customTit
     return
 }
 
+ClickCoordWhenGone(var, coordinateX:="", coordinateY:="", delay:=500, customTitle:="") {
+    if (customTitle = "")
+        TitleToUse := Title
+    else
+        TitleToUse := customTitle
 
+    while (ok := FindText(var[1], var[2], var[3], var[4], 0, 0, var[5])) {
+        Sleep, 100
+    }
+
+    X := ok.1.x
+    Y := ok.1.y
+    WinGetPos, WinX, WinY, WinWidth, WinHeight, %TitleToUse%
+    realX := X - WinX
+    realY := Y - WinY
+    if (coordinateX = "")
+        coordinateX := realX
+    if (coordinateY = "")
+        coordinateY := realY
+    ControlClick, x%coordinateX% y%coordinateY%, %TitleToUse%,, LEFT, 1, NA
+    Sleep, %delay%
+    return
+}
+
+GenerateCoordinate(var, title) { ; title would be the new window to generate
+    global
+    pict := var
+    WinGetPos, x, y, w, h, %Title1% ; the title for first window 0,0
+    WinGetPos, x2, y2, w2, h2, %title%
+    offsetX := x2 - x
+    offsetY := y2 - y
+    ; Calculate the absolute coordinates for the button in the specified window
+    x1 := offsetX + var[1]
+    y1 := offsetY + var[2]
+    x2 := offsetX + var[3]
+    y2 := offsetY + var[4]
+    image := var[5]
+
+    var := [x1, y1, x2, y2, image]
+
+    return var
+}
 
 

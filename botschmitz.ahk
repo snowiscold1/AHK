@@ -1,4 +1,4 @@
-;;things to do add random 
+;;things to do add random MTExMDM3MzcwMzE0NzA2OTUxMQ.GTk1Yi.waI3sdHFwAN5qNRBzCkymeMLWOFBGnIUbQDkEg
 #SingleInstance Force
 char:= "slave"
 #Include %A_ScriptDir%\botschmitzcfg.ini
@@ -26,8 +26,11 @@ IniWrite, 0,%A_ScriptDir%\pos.ini, Stats, kill:
 IniWrite, 0,%A_ScriptDir%\pos.ini, Backup, FarmState:
 IniWrite, 0,%A_ScriptDir%\pos.ini, Backup, SuperFarmState:
 IniWrite, 0,%A_ScriptDir%\pos.ini, Backup, Stop:
+IniWrite, 0,%A_ScriptDir%\pos.ini, score, totalvisit:
+IniWrite, 0,%A_ScriptDir%\pos.ini, score, totalque:
 WaitingTime = 0
 runonce := 0
+alreadyswap:= 0
 global oArrayText := []
 
 IniRead, gui_position, %A_ScriptDir%\pos.ini, window position, gui_position, Center
@@ -73,11 +76,11 @@ Gui,1: Font, Bold
 Gui, 1: Add, Button, Section x8 w58 gresetlogpos, RESET
 Gui,1: Font, Normal
 Gui, 1: Add, Button, ys x+8 w58 gtimeStart, AutoStart
-Gui,1: Add, Button, ys x+8 w58 gClearLog, ClearLog
+Gui,1: Add, Button, ys x+8 w58 gGoMusic, Go Music
 Gui,1: Font, Bold
 Gui, 1: Add, Button, ys x+8 w58 gESC, RELOAD
 Gui, 1: Font, Normal
-GroupBox("GB6", "Extras", GBTHeight, 10, "RESET|AutoStart|ClearLog|RELOAD")
+GroupBox("GB6", "Extras", GBTHeight, 10, "RESET|AutoStart|Go Music|RELOAD")
 
 Gui,1: Show, %gui_position%, Fern Bot
 Gui,1: +Hwndgui_id
@@ -175,7 +178,7 @@ EnvAdd, target, 1, d
 
 EnvSub, target, %A_Now%, Seconds.
 
-nextspawn := target * 1000 
+nextspawn := target * 1000
 nextspawninmin := (nextspawn/1000)/60
 log("Bot will automatically start on next wave")
 sleep % nextspawn
@@ -197,7 +200,7 @@ if (T)
 		IfWinNotExist, %backup2%
 			run %backup2% ahk_class AutoHotkey
 		IfWinNotExist, %backup3%
-			run %backup3% ahk_class AutoHotkey		
+			run %backup3% ahk_class AutoHotkey
         Guicontrol,1:, St, STOP
 		Guicontrol,1: Disable, Country
         Guicontrol,1: Disable, Number
@@ -218,7 +221,7 @@ else
         msgbox, 262208,Status ,STOPPED , 1
 		AHKPanic(1, 0, 0, 0)
 		Reload
-		
+
 	}
 return
 
@@ -234,7 +237,7 @@ IfWinNotExist, %deletelog% ahk_class AutoHotkey
 {
 run %deletelog% ahk_class AutoHotkey
 }
-		
+
 Gui,2: +AlwaysOnTop +ToolWindow -SysMenu -Caption
 Gui,2: Color, CCCCCC
 ;~ Gui, Font, cFF0000 s15 , verdana ;red
@@ -246,7 +249,7 @@ Gui,2: Add, Text, vCounter x8 y10 BackgroundTrans, Total Kill(s) = %Kill%00000
 Gui,2: Add, Text, vCounter2 x8 y20 BackgroundTrans, Current Wave Kill(s) = %cKill%00000
 Gui,2: Add, Text, vCounterCard x8 y30 BackgroundTrans, Total Card(s) = %Card%00000
 Gui,2: Add, Text, vFarmState x8 y40 BackgroundTrans, Total Card(s) = %FarmState%00000
-
+Gui,2: Add, Text, vCounterScore x8 y50 BackgroundTrans, Live Score = %score%00000
 Gui,2: Show, NoActivate x5 y124,uptime  ; screen position here
 WinSet, TransColor, CCCCCC 255,uptime
 #Persistent
@@ -316,7 +319,7 @@ while(!ok:=FindText(GHhallSlave[1], GHhallSlave[2], GHhallSlave[3], GHhallSlave[
 {
 				waitingtime++
 				sleep 1000
-					
+
 				if (WaitingTime>3) {
 				 WaitingTime=0
 				 goto Find
@@ -333,12 +336,12 @@ FindText_BindWindow(Title2ID)
  {
 				waitingtime++
 				sleep 1000
-				
+
 				if (WaitingTime>7) {
 				 WaitingTime=0
 				 goto Find
 				}
-				 
+
  }
  {
 
@@ -352,7 +355,7 @@ FindText_BindWindow(Title2ID)
  {
 				waitingtime++
 				sleep 1000
-					
+
 				if (WaitingTime>7) {
 				 WaitingTime=0
 				 goto changechannelXbutton
@@ -371,19 +374,19 @@ FindText_BindWindow(Title2ID)
 	ControlSend, ,%Number%, %Title2%
 	CountNumb := % Country " "Number
 	FileAppend, %CountNumb%`n, %A_ScriptDir%\log.txt
-	
+
 }
 else
 {
 	if (logfull==1) {
 		goto logfullgoalt
 		}
-			
-			
+
+
 	if (superfarmstate!=0) {
 		if FileExist("logfoundbackup.txt") {
 		try {
-		
+
 		FileRead, fileContent, logfoundbackup.txt
 		if (StrLen(fileContent) = 0 or RegExMatch(fileContent, "^\s*$"))
 		{
@@ -398,7 +401,7 @@ else
 		Number:= SubStr(CountNumb, 4, 4)
 		SetKeyDelay, 100
 		ControlSend, ,%Number%, %Title2%
-		
+
 
 		goto CL
 		}
@@ -407,11 +410,11 @@ else
 		goto Find
 		}
 	}
-		
-	}
-		
 
-	if (jumpa==1) 
+	}
+
+
+	if (jumpa==1)
 	{
 		jumpa=0
 		Number++
@@ -422,14 +425,14 @@ else
 				Number++
 				gosub countrycycle
 				CountNumb := % Country " "Number
-			}  
+			}
 		if (logfull==1) {
 				goto logfullgoalt
 			}
 		ControlSend, ,%Number%, %Title2%
 	}
 
-	else 
+	else
 	{
 		jumpa=0
 		tooltip,
@@ -439,10 +442,10 @@ else
 			{
 				gosub shufflechannel
 				CountNumb := % Country " "Number
-			} 
+			}
 		if (logfull==1) {
 				goto logfullgoalt
-			}	
+			}
 		ControlSend, ,%Number%, %Title2%
 	}
 }
@@ -458,13 +461,13 @@ While (!ok:=FindText(CountryList[1], CountryList[2], CountryList[3], CountryList
 				waitingtime++
 				sleep 1000
 				ControlClick, x239 y245, %Title2%,, LEFT, 1, NA ; open country list
-				
+
 				if (WaitingTime>7) {
 				 WaitingTime=0
 				 goto changechannelXbutton
 				}
 }
-				WaitingTime=0	
+				WaitingTime=0
 gosub %Country%
 
 while(ok:=FindText(changechannelXbutton[1], changechannelXbutton[2], changechannelXbutton[3], changechannelXbutton[4], 0, 0, changechannelXbutton[5]))
@@ -498,7 +501,7 @@ if(ok:=FindText(dontremind[1], dontremind[2], dontremind[3], dontremind[4], 0, 0
 
 while(ok:=FindText(changechannelXbutton[1], changechannelXbutton[2], changechannelXbutton[3], changechannelXbutton[4], 0, 0, changechannelXbutton[5]))
 {
-	
+
 	ControlClick, x477 y52, %Title2%,, LEFT, 1, NA
 	sleep 1000
 }
@@ -509,7 +512,7 @@ While (!ok:=FindText(skillbarjumpch[1],skillbarjumpch[2],skillbarjumpch[3],skill
  {
 				waitingtime++
 				Sleep, 1000
-				
+
 				if (ok:=FindText(atkcd[1],atkcd[2],atkcd[3],atkcd[4], 0, 0, atkcd[5]))
 				{
 					if (superfarmstate != 0) {
@@ -517,7 +520,7 @@ While (!ok:=FindText(skillbarjumpch[1],skillbarjumpch[2],skillbarjumpch[3],skill
 					}
 					goto avex
 				}
-				
+
 				if (WaitingTime>9) {
 				 WaitingTime=0
 				 failjump++
@@ -529,7 +532,7 @@ While (!ok:=FindText(skillbarjumpch[1],skillbarjumpch[2],skillbarjumpch[3],skill
 				{
 					if (superfarmstate != 0) {
 						if CountNumb=
-							TF_RemoveBlankLines("!logfoundbackup.txt",1,1) 
+							TF_RemoveBlankLines("!logfoundbackup.txt",1,1)
 						TF_RemoveLines("!logfoundbackup.txt",1,1) ; removes
 					}
 					failjump=0
@@ -537,6 +540,7 @@ While (!ok:=FindText(skillbarjumpch[1],skillbarjumpch[2],skillbarjumpch[3],skill
 					gosub spawnlocation
 					nomob++
 					log(Title2 " is unable to find King Schmitz at " CountNumb "...")
+					updateiniby1("totalvisit", "score")
 					gosub openmapslave
 					goto Find
 				}
@@ -555,7 +559,7 @@ While (!ok:=FindText(skillbarjumpch[1],skillbarjumpch[2],skillbarjumpch[3],skill
 					goto KingSchmitzslave
 				}
 
-			
+
 
 checkavatarexist:
 
@@ -565,13 +569,12 @@ While (!ok:=FindText(atkcd[1],atkcd[2],atkcd[3],atkcd[4], 0, 0, atkcd[5]))
 				waitingtime++
 				tooltip,
 				sleep 1000
-				}	
-				
+				}
+
 				if (WaitingTime>7) {
 				 WaitingTime=0
 				 gosub scamghostcap
-	
-	
+				updateiniby1("totalvisit", "score")
 				gosub spawnlocation
 				nomob++
 				log(Title2 " is unable to find King Schmitz at " CountNumb "...")
@@ -590,6 +593,8 @@ avex:
 				DetectHiddenWindows, On
 				SetTitleMatchMode, 2
 				FileAppend, %CountNumb%`n, %A_ScriptDir%\logfound.txt
+				updateiniby1("totalvisit", "score")
+				updateiniby1("totalque", "score")
 				sleep 5000 ; killtime
 				gosub spawnlocation
 				goto Find
@@ -607,13 +612,13 @@ FindText_BindWindow(Title2ID)
 {
 				waitingtime++
 				sleep 1000
-					
+
 				if (WaitingTime>6) {
 				 WaitingTime=0
 			 if(ok:=FindText(fullmob[1], fullmob[2], fullmob[3], fullmob[4], 0, 0, fullmob[5]))
 				{
 					if (kenascroll = 0){
-						tooltip, 
+						tooltip,
 						sleep 1000
 						gosub slideup
 						kenascroll=1
@@ -623,24 +628,24 @@ FindText_BindWindow(Title2ID)
 				}
 
 			 if(ok:=FindText(closemob[1], closemob[2], closemob[3], closemob[4], 0, 0, closemob[5]))
-			 {		
+			 {
 				CoordMode, Mouse
 				X:=ok.1.x-(533), Y:=ok.1.y, Comment:=ok.1.id
 				ControlClick, x%x% y%y%, %Title2%,, LEFT, 1, NA
 				sleep 1000
 			 }
-				
+
 			gosub spawnlocation
 			nomob++
 			log(Title2 " is unable to find King Schmitz at " CountNumb "...")
-
+			updateiniby1("totalvisit", "score")
 			gosub openmapslave
 			goto Find
 			 }
 }
-	
-	
-	
+
+
+
 {
 			WaitingTime=0
 			CoordMode, Mouse
@@ -658,7 +663,7 @@ FindText_BindWindow(Title2ID)
 			{
 				waitingtime++
 				sleep 1000
-					
+
 				if (WaitingTime>14) {
 					fail++
 					WaitingTime=0
@@ -669,7 +674,8 @@ FindText_BindWindow(Title2ID)
 DetectHiddenWindows, On
 SetTitleMatchMode, 2
 FileAppend, %CountNumb%`n, %A_ScriptDir%\logfound.txt
-
+updateiniby1("totalvisit", "score")
+updateiniby1("totalque", "score")
 if(ok:=FindText(closemob[1], closemob[2], closemob[3], closemob[4], 0, 0, closemob[5]))
 {
 				CoordMode, Mouse
@@ -688,7 +694,7 @@ goto Find
 ;~ if (nomob = 5)
 ;~ {
 ;~ gosub skip5channel
-;~ } 
+;~ }
 
 
 
@@ -699,60 +705,60 @@ return
 
 countrycycle:
 
-if (Country = "EN") 
+if (Country = "EN")
 {
 
-	if(Number>12) 
+	if(Number>12)
 	{
 		gosub nextcountry
 	}
-	
+
 }
 
-if (Country = "TH") 
+if (Country = "TH")
 {
-	if(Number>42) 
+	if(Number>42)
 	{
 		gosub nextcountry
 	}
-	
+
 }
 
-if (Country = "PH") 
+if (Country = "PH")
 {
-	if(Number>25) 
+	if(Number>25)
 	{
 		gosub nextcountry
 	}
-	
+
 }
 
 
-if (Country = "ID") 
+if (Country = "ID")
 {
-	if(Number>18) 
+	if(Number>18)
 	{
 		gosub nextcountry
 	}
-	
+
 }
 
-if (Country = "CN") 
+if (Country = "CN")
 {
-	if(Number>1) 
+	if(Number>1)
 	{
 		gosub nextcountry
 	}
-	
+
 }
 
-if (Country = "VN") 
+if (Country = "VN")
 {
-	if(Number>1) 
+	if(Number>1)
 	{
 		gosub nextcountry
 	}
-	
+
 }
 
 return
@@ -799,7 +805,7 @@ EnvAdd, target, 1, d
 
 EnvSub, target, %A_Now%, Seconds.
 
-nextspawn := target * 1000 
+nextspawn := target * 1000
 nextspawninmin := (nextspawn/1000)/60
 
 
@@ -865,34 +871,34 @@ random, NextCount, 1, 6
 x := % CountryAvailable[NextCount]
 Country = % x
 
-if (Country = "EN") 
+if (Country = "EN")
 {
 	random, Number, 1, 12
 }
 
-if (Country = "TH") 
+if (Country = "TH")
 {
 	random, Number, 1, 42
 }
 
-if (Country = "PH") 
+if (Country = "PH")
 {
-	random, Number, 1, 25	
-	
+	random, Number, 1, 25
+
 }
 
 
-if (Country = "ID") 
+if (Country = "ID")
 {
-	random, Number, 1, 18	
+	random, Number, 1, 18
 }
 
-if (Country = "CN") 
+if (Country = "CN")
 {
 	random, Number, 1, 1
 }
 
-if (Country = "VN") 
+if (Country = "VN")
 {
 	random, Number, 1, 1
 }
@@ -939,9 +945,9 @@ InFile(CountNumb)
     return 0
 }
 
- 
- 
- 
+
+
+
 
 ; Get the RGB value of all the points of the picture to the array
 FindText_ShowArea(x:="", y:="", Active_width:="", Active_height:="")
@@ -1019,12 +1025,12 @@ startLogging(x:=113,y:=331,w:=420,h:=300,title:="Fern Bot"){
 		Gui,5: +AlwaysOnTop ;Keeps the log on top
 		Gui,5: Add, Edit, x10 y10 w%innerW% h%innerH% vConsole ; Adds inner box
 		Gui,5: Add, Button, x10 y260 h30 gChannel, Found Channel
-		Gui,5: Add, Button, x100 y260 h30 gClearlog, Clear Log
+		Gui,5: Add, Button, x100 y260 h30 gGoMusic, Go Music
 		Gui,5: Add, Checkbox, x160 y270 vAlt1 Checked, Include Alt1`
 		Gui,5: Add, Checkbox, x240 y270 vAlt2 Checked, Include Alt2`
 		Gui,5: Show, x%x% y%y% w%w% h%h%, %title% ; Displays window
 		log("Bot has started") ; This line can be removed if wanted
-	} 
+	}
 }
 
 
@@ -1161,11 +1167,11 @@ sendError(msg){
 	  "content": "%msg%"
 	}
 	) ;Use https://leovoel.github.io/embed-visualizer/ to generate above webhook code
-	
+
 	WebRequest := ComObjCreate("WinHttp.WinHttpRequest.5.1")
 	WebRequest.Open("POST", url, false)
 	WebRequest.SetRequestHeader("Content-Type", "application/json")
-	WebRequest.Send(postdata)  
+	WebRequest.Send(postdata)
 
 
 }
@@ -1175,7 +1181,7 @@ sendError(msg){
 vlog(msg := "", vFullLog := 0)
 {
     ; creates an array to log in all your data
-    static oArrayText := [] 
+    static oArrayText := []
     static oArrayFULLText := []
 
     ; for demonstration purposes, I left it at "10"
@@ -1183,41 +1189,41 @@ vlog(msg := "", vFullLog := 0)
 
     FormatTime, TimeString, A_Now, yyyyMMdd HH:mm:ss  ; Generates a time stamp
 
-    ; the text you want for your log line 
-    vMessage := TimeString " - " msg 
+    ; the text you want for your log line
+    vMessage := TimeString " - " msg
 
-    ; save it to the array 
+    ; save it to the array
     oArrayText.push(vMessage)
     oArrayFULLText.push(vMessage)
 
     ; if there are more than 1000 lines in here
     While (oArrayText.count() > vMaxLineLength)
-        ; remove the first one 
+        ; remove the first one
         oArrayText.removeAt(1)
 
-    str := "" 
+    str := ""
 
     if (vFullLog = 0)
     {
         ; displays the partial-limited log
         for each, line in oArrayText
         {
-            ; reverse the order of the string 
+            ; reverse the order of the string
             str .= oArrayText[oArrayText.count() - a_Index + 1] "`r`n"
         }
     }
-    else 
+    else
     {
         ; displays the full log:
         for each, line in oArrayFULLText
         {
-            ; reverse the order of the string 
+            ; reverse the order of the string
             str .= oArrayFULLText[oArrayFULLText.count() - a_Index + 1] "`r`n"
-        } 
+        }
     }
 
     ; displays it on the GUI
-    GuiControl, , Console, % str 
+    GuiControl, , Console, % str
     return
 }
 
@@ -1230,12 +1236,61 @@ Return
 
 determinespot() {
     global cKill
-	
+
     if (cKill < 40) {
         log("AutoSwapSpot is On")
 		gosub AutoSwapSpot
     }
-    
+
+    return
+}
+
+
+score() {
+    global cKill
+
+    if (cKill == "")
+        cKill := 0
+
+    if (cKill == "")
+        scKill := 0
+    else
+        scKill := cKill
+
+	if (alreadyswap == 1)
+		scKill := cKill - beforeswapKill
+
+	IniRead, superfarmstate, %A_ScriptDir%\pos.ini, Backup, superfarmstate:
+    IniRead, totalvisit, %A_ScriptDir%\pos.ini, score, totalvisit:
+    IniRead, totalque, %A_ScriptDir%\pos.ini, score, totalque:
+
+    if (superfarmstate == "")
+        superfarmstate := 0
+
+    if (totalvisit == "")
+        totalvisit := 0
+
+    if (totalque == "")
+        totalque := 0
+
+	cScore := ((totalque + scKill) / totalvisit) * 100
+
+    if (cScore == "")
+        return 0
+
+    return cScore
+}
+
+updateiniby1(var, section) {
+    IniRead, superfarmstate , %A_ScriptDir%\pos.ini, Backup, superfarmstate:
+    if (superfarmstate == 0) {
+    ; Read the current value from pos.ini
+    IniRead, currentValue, pos.ini, %section%, %var%:
+    ; Increment the value by 1
+    newvalue := currentValue + 1
+    ; Write the updated value back to pos.ini
+    IniWrite, %newvalue%, pos.ini, %section%, %var%:
+    }
     return
 }
 
@@ -1270,11 +1325,11 @@ IniRead, SpotText, %A_ScriptDir%\pos.ini, window position, currentspot:
 
 		t4x:="x352"
 		t4y:="y193"
-    
+
 		spawnX:="332"
 		spawnY:="182"
  }
- 
+
  if (SpotText == "Spot 2") {
 		t1x:="x389"
 		t1y:="y97"
@@ -1286,12 +1341,12 @@ IniRead, SpotText, %A_ScriptDir%\pos.ini, window position, currentspot:
 		t3y:="y115"
 
 		t4x:="x355"
-		t4y:="y118"	
-		
+		t4y:="y118"
+
 		spawnX:="373"
 		spawnY:="87"
  }
- 
+
  if (SpotText == "Spot 3") {
 
 		t1x:="x395"
@@ -1305,11 +1360,11 @@ IniRead, SpotText, %A_ScriptDir%\pos.ini, window position, currentspot:
 
 		t4x:="x394"
 		t4y:="y140"
-		
+
 		spawnX:="398"
-		spawnY:="122"	
+		spawnY:="122"
  }
- 
+
 if (SpotText == "Spot 4") {
 
 		t1x:="x428"
@@ -1323,9 +1378,9 @@ if (SpotText == "Spot 4") {
 
 		t4x:="x427"
 		t4y:="y204"
-		
+
 		spawnX:="396"
-		spawnY:="194"	
+		spawnY:="194"
  }
 
 if (efficiency < 70) {
@@ -1339,7 +1394,7 @@ if (tauntcoord1x == t1x)
 		newtauntcoord1x:=t2x
 		newtauntcoord1y:=t2y
 	}
-	
+
 	if (t=2) {
 		newtauntcoord1x:=t3x
 		newtauntcoord1y:=t3y
@@ -1353,7 +1408,7 @@ if (tauntcoord1x == t2x)
 		newtauntcoord1x:=t1x
 		newtauntcoord1y:=t1y
 	}
-	
+
 	if (t=2) {
 		newtauntcoord1x:=t3x
 		newtauntcoord1y:=t3y
@@ -1367,7 +1422,7 @@ if (tauntcoord1x == t3x)
 		newtauntcoord1x:=t1x
 		newtauntcoord1y:=t1y
 	}
-	
+
 	if (t=2) {
 		newtauntcoord1x:=t2x
 		newtauntcoord1y:=t2y
@@ -1395,8 +1450,10 @@ WinClose, %deletelog% ahk_class AutoHotkey
 ExitApp
 return
 
-Clearlog:
-GuiControl,1: , Console, Log Cleared
+GoMusic:
+
+run %gotomusic% ahk_class AutoHotkey
+
 return
 
 ToggleSpot:
@@ -1420,8 +1477,8 @@ ToggleSpot:
 		t3y:="y115"
 
 		t4x:="x355"
-		t4y:="y118"	
-		
+		t4y:="y118"
+
 		spawnX:="373"
 		spawnY:="87"
 	}
@@ -1440,9 +1497,9 @@ ToggleSpot:
 
 		t4x:="x394"
 		t4y:="y140"
-		
+
 		spawnX:="398"
-		spawnY:="122"		
+		spawnY:="122"
     }
     Else If (ButtonText = "Spot 3")
     {
@@ -1459,9 +1516,9 @@ ToggleSpot:
 
 		t4x:="x427"
 		t4y:="y204"
-		
+
 		spawnX:="396"
-		spawnY:="194"			
+		spawnY:="194"
     }
     Else
     {
@@ -1478,9 +1535,9 @@ ToggleSpot:
 
 		t4x:="x352"
 		t4y:="y193"
-    
+
 		spawnX:="332"
-		spawnY:="182"	
+		spawnY:="182"
 	}
 	IniWrite, %t1x%,%A_ScriptDir%\pos.ini, Backup, tauntcoord1x:
 	IniWrite, %t1y%,%A_ScriptDir%\pos.ini, Backup, tauntcoord1y:
@@ -1491,7 +1548,7 @@ ToggleSpot:
 	run %check% ahk_class AutoHotkey
 loop, 5
 {
-    titles := ["BlueStacks", "ADEL", "SoulSlayers", "caliphx", "sundalmalam"][A_Index]
+    titles := [Title, Title2, Title3, Title4, Title5][A_Index]
     ControlClick, x%spawnX% y%spawnY%, %titles%,, LEFT, 1, NA
 }
 
@@ -1519,6 +1576,8 @@ FileAppend,, %A_ScriptDir%\logfoundbackup2.txt
 IniWrite, 0,%A_ScriptDir%\pos.ini, Backup, Stop:
 IniWrite, 0,%A_ScriptDir%\pos.ini, Backup, FarmState:
 IniWrite, 0,%A_ScriptDir%\pos.ini, Backup, SuperFarmState:
+IniWrite, 0,%A_ScriptDir%\pos.ini, score, totalvisit:
+IniWrite, 0,%A_ScriptDir%\pos.ini, score, totalque:
 
 log("All channels logs cleared, you may start fresh!")
 log("pos.ini reset, return to default")
@@ -1588,7 +1647,7 @@ Loop %IDList%
   IfNotInString, ATitle, %A_ScriptFullPath%
     {
     If Suspend
-      PostMessage, 0x111, 65305,,, ahk_id %ID%  ; Suspend. 
+      PostMessage, 0x111, 65305,,, ahk_id %ID%  ; Suspend.
     If Pause
       PostMessage, 0x111, 65306,,, ahk_id %ID%  ; Pause.
     If Kill
@@ -1598,7 +1657,7 @@ Loop %IDList%
 If SelfToo
   {
   If Suspend
-    Suspend, Toggle  ; Suspend. 
+    Suspend, Toggle  ; Suspend.
   If Pause
     Pause, Toggle, 1  ; Pause.
   If Kill
@@ -1609,18 +1668,18 @@ If SelfToo
 openmap:
 FindText_BindWindow(TitleID)
 while(!ok:=FindText(worldmap[1], worldmap[2], worldmap[3], worldmap[4], 0, 0, worldmap[5]))
-{	
+{
 ControlClick, x498 y75, %Title%,, LEFT, 1, NA
 sleep 1000
 }
 return
- 
+
 
 resetguildch:
 log(Title2 " is entering guildhall to reset gui")
 
 if(ok:=FindText(worldmapslave[1], worldmapslave[2], worldmapslave[3], worldmapslave[4], 0, 0, worldmapslave[5]))
-{	
+{
 ControlClick, x498 y75, %Title2%,, LEFT, 1, NA ;map
 sleep 1000
 }
@@ -1665,10 +1724,10 @@ while(ok:=FindText(confirmleave[1], confirmleave[2], confirmleave[3], confirmlea
 
 sleep 10000
 return
- 
+
 openmapslave:
 while(!ok:=FindText(worldmapslave[1], worldmapslave[2], worldmapslave[3], worldmapslave[4], 0, 0, worldmapslave[5]))
-{	
+{
 ControlClick, x498 y75, %Title2%,, LEFT, 1, NA
 sleep 1000
 }
@@ -1681,21 +1740,18 @@ If (ButtonText = "Spot 1") {
 	GuiControl, 1:, SpotButton, Spot 2
 }
 
-gosub togglespot	
+gosub togglespot
 GuiControlGet, ButtonText, , SpotButton
 log("Swap position to " ButtonText)
-
+alreadyswap :=1
+beforeswapkill := cKill
 return
 
 DNWMode:
 currentMinute := A_Min
-FileRead, content, %A_WorkingDir%\logfoundbackup2.txt
-loop, parse, Content, `n,`r
-  {
-  lines := A_Index-1
-  }
-  
-if (currentMinute = 3) && (cKill < 6) && (lines < 3) {
+actualscore := score()
+
+if (currentMinute = 3) && (actualscore < 65) {
 	log("Do Not Wait mode is On, ready to clear and change spot")
     logfull := 1 ; ready to swap spot
 }
@@ -1706,21 +1762,21 @@ IniWrite, 1,%A_ScriptDir%\pos.ini, Backup, Stop:
 	if FileExist("log.txt") {
 		FileDelete, %A_ScriptDir%\log.txt
 	}
-	
+
 logfull:= 0
 totalfound:=TF_CountLines("logfoundbackup.txt")-1
 IniRead, earlykill , %A_ScriptDir%\pos.ini, Stats, kill:
 
 while(ok:=FindText(changechannelXbutton[1], changechannelXbutton[2], changechannelXbutton[3], changechannelXbutton[4], 0, 0, changechannelXbutton[5]))
 {
-	
+
 	ControlClick, x477 y52, %Title2%,, LEFT, 1, NA
 	sleep 1000
 }
 gosub openmapslave
 
 loop{
-	
+
 if FileExist("logfound.txt") {
 	CountNumb := TF_ReadLines("logfound.txt",1,1,1)
 	if !ErrorLevel
@@ -1753,7 +1809,7 @@ if FileExist("logfound.txt") {
 	IniWrite, 1,%A_ScriptDir%\pos.ini, Backup, FarmState:
 	IniWrite, 1,%A_ScriptDir%\pos.ini, Backup, SuperFarmState:
 	goto Find
-	
+
 
 altv2:
 FileRead, content, logfound.txt ; Read the content of the file
@@ -1765,9 +1821,9 @@ FileRead, content, logfound.txt ; Read the content of the file
 	}
 
 loop{
-	
+
 if FileExist("logfound.txt") {
-	
+
      CountNumb := TF_ReadLines("logfound.txt",1,1,1)
 	if !ErrorLevel
 		if (!CountNumb){
@@ -1777,7 +1833,7 @@ if FileExist("logfound.txt") {
 }
 }
 	sleep 10000
-	
+
 	Gui,5:Submit, NoHide
 	FileRead, content, logfoundbackup2.txt ; Read the content of the file
 	content := Trim(content, "`n`r `t") ; Remove newline, return, tab, and space characters
@@ -1785,7 +1841,7 @@ if FileExist("logfound.txt") {
 		logfoundbsize:=0
 	else
 		logfoundbsize:=1
-	
+
 	if (Alt2=1)and(logfoundbsize!=0) {
 	IniRead, currentkill , %A_ScriptDir%\pos.ini, Stats, kill:
 	log("Farming at second alternate location")
@@ -1793,7 +1849,7 @@ if FileExist("logfound.txt") {
 
 	IniWrite, 2,%A_ScriptDir%\pos.ini, Backup, FarmState:
 	IniWrite, 2,%A_ScriptDir%\pos.ini, Backup, SuperFarmState:
-	
+
 	gosub spawnlocation
 	sleep 1000
 	ControlClick, %tauntcoord2x% %tauntcoord2y%, %Title%,, LEFT, 1, NA ;location far btm right
@@ -1804,6 +1860,7 @@ if FileExist("logfound.txt") {
 goto backtonormal
 
 taunt1:
+SetTitleMatchMode, 2
     if (startT1 = 0)
         {
 		startT1 := 1
@@ -1817,12 +1874,12 @@ taunt1:
 		startT1 := 0
 		Guicontrol,1: +cRed, Taunt1
 		DetectHiddenWindows, On
-		IfWinExist, %backup%
-			WinClose, %backup% ahk_class AutoHotkey
+		WinClose, %backup% ahk_class AutoHotkey
         }
 return
 
 taunt2:
+SetTitleMatchMode, 2
     if (startT2 = 0)
         {
 		startT2 := 1
@@ -1836,12 +1893,12 @@ taunt2:
 		startT2 := 0
 		Guicontrol,1: +cRed, Taunt2
 		DetectHiddenWindows, On
-		IfWinExist, %backup2%
-			WinClose, %backup2% ahk_class AutoHotkey
+		WinClose, %backup2% ahk_class AutoHotkey
         }
 return
 
 taunt3:
+SetTitleMatchMode, 2
     if (startT3 = 0)
         {
 		startT3 := 1
@@ -1855,12 +1912,10 @@ taunt3:
 		startT3 := 0
 		Guicontrol,1: +cRed, Taunt3
 		DetectHiddenWindows, On
-		IfWinExist, %backup3%
-			WinClose, %backup3% ahk_class AutoHotkey
+		WinClose, %backup3% ahk_class AutoHotkey
         }
 return
 
-return
 
 SwitchSpot:
 IniRead, superfarmstate , %A_ScriptDir%\pos.ini, Backup, superfarmstate:
@@ -1899,7 +1954,7 @@ return
 backtonormal:
 IniWrite, 1,%A_ScriptDir%\pos.ini, Backup, Stop:
 loop{
-	
+
 if FileExist("logfound.txt") {
 	CountNumb := TF_ReadLines("logfound.txt",1,1,1)
 	if !ErrorLevel
@@ -1928,7 +1983,7 @@ EnvAdd, target, 1, d
 
 EnvSub, target, %A_Now%, Seconds.
 
-nextspawn := target * 1000 
+nextspawn := target * 1000
 nextspawninmin := (nextspawn/1000)/60
 log("Wave cleared. Waiting for next spawn in " nextspawninmin "min..")
 IniRead, prevamt , %A_ScriptDir%\pos.ini, Music, prevamt:
@@ -1937,15 +1992,16 @@ IniWrite, 0,%A_ScriptDir%\pos.ini, Backup, SuperFarmState:
 
 loop, 5
 {
-    titles := ["BlueStacks", "ADEL", "SoulSlayers", "caliphx", "sundalmalam"][A_Index]
+    titles := [Title, Title2, Title3, Title4, Title5][A_Index]
     ControlClick, x%spawnX% y%spawnY%, %titles%,, LEFT, 1, NA
 }
 
 	effic := % efficiency()
-	log("current total kill " kill)
+	log("current score " score)
 	sleep 500
 	log("Taunt spot efficiency is "effic "`% ")
 	sleep 500
+
 	log("Farming at normal location")
 
 if (prevamt < 30) && (nextspawn > 600000) &&  (nextspawn < 2400000) && (AutoMusic = 1)
@@ -1958,12 +2014,14 @@ TrayTip , Deleting log.txt, Country log has been reset, 4 ;show for 4 seconds
 	if FileExist("log.txt") {
 		FileDelete, %A_ScriptDir%\log.txt
 	}
+IniWrite, 0, %A_ScriptDir%\pos.ini, score, totalvisit:
+IniWrite, 0, %A_ScriptDir%\pos.ini, score, totalque:
 goto checkavatarexist
 }
 
 
 if (nextspawn < 2400000) {
-	if (AutoSwapSpot == 1) {
+	if (AutoSwapSpot == 1 && alreadyswap==0) {
 		determinespot()
 		gosub resetlogpos
 		IniWrite, 1,%A_ScriptDir%\pos.ini, Backup, Stop:
@@ -1971,8 +2029,8 @@ if (nextspawn < 2400000) {
 		WinClose, %backup2% ahk_class AutoHotkey
 		WinClose, %backup3% ahk_class AutoHotkey
 		run %backup% ahk_class AutoHotkeylog
-		run %backup2% ahk_class AutoHotkeylog	
-		run %backup3% ahk_class AutoHotkeylog		
+		run %backup2% ahk_class AutoHotkeylog
+		run %backup3% ahk_class AutoHotkeylog
 			current_hour = %A_hour%
 			target_hour = % (current_hour+1)
 			target_time = %target_hour%00
@@ -1987,29 +2045,62 @@ if (nextspawn < 2400000) {
 			EnvAdd, target, 1, d
 			}
 			EnvSub, target, %A_Now%, Seconds.
-			nextspawn := target * 1000 
+			nextspawn := target * 1000
 			nextspawninmin := (nextspawn/1000)/60
-		}		
-		sleep % nextspawn	
+		}
+		alreadyswap := 0
+		sleep % nextspawn
 }
-else 
+else
 {
-	if (AutoSwapSpot == 1) {
+	if (AutoSwapSpot == 1 && alreadyswap==0) {
 		determinespot()
-		sleep 60000	
+		sleep 60000
 		gosub resetlogpos
 		WinClose, %backup% ahk_class AutoHotkey
 		WinClose, %backup2% ahk_class AutoHotkey
 		WinClose, %backup3% ahk_class AutoHotkey
 		run %backup% ahk_class AutoHotkeylog
-		run %backup2% ahk_class AutoHotkeylog	
+		run %backup2% ahk_class AutoHotkeylog
 		run %backup3% ahk_class AutoHotkeylog
+		IniWrite, 0, %A_ScriptDir%\pos.ini, score, totalvisit:
+		IniWrite, 0, %A_ScriptDir%\pos.ini, score, totalque:
 		goto checkavatarexist
 		}
+	if (AutoSwapSpot == 1 && alreadyswap==1) {
+		gosub resetlogpos
+		IniWrite, 1,%A_ScriptDir%\pos.ini, Backup, Stop:
+		WinClose, %backup% ahk_class AutoHotkey
+		WinClose, %backup2% ahk_class AutoHotkey
+		WinClose, %backup3% ahk_class AutoHotkey
+		run %backup% ahk_class AutoHotkeylog
+		run %backup2% ahk_class AutoHotkeylog
+		run %backup3% ahk_class AutoHotkeylog
+			current_hour = %A_hour%
+			target_hour = % (current_hour+1)
+			target_time = %target_hour%00
+			if (target_time = 2400)
+			{
+				target_time = 0000
+			}
+			converted := SubStr("000" . target_time, -3)
+			target = %A_YYYY%%A_MM%%A_DD%%converted%00
+			if (converted = 0000)
+			{
+			EnvAdd, target, 1, d
+			}
+			EnvSub, target, %A_Now%, Seconds.
+			nextspawn := target * 1000
+			nextspawninmin := (nextspawn/1000)/60
+			alreadyswap := 0
+			sleep % nextspawn
+	}
 }
-	
 	IniWrite, 0,%A_ScriptDir%\pos.ini, Backup, Stop:
-	prevkill:= kill
+	if (alreadyswap==0)
+		prevkill:= kill
+	IniWrite, 0, %A_ScriptDir%\pos.ini, score, totalvisit:
+	IniWrite, 0, %A_ScriptDir%\pos.ini, score, totalque:
 	TrayTip , Deleting log.txt, Country log has been reset, 4 ;show for 4 seconds
 		if FileExist("log.txt") {
 		FileDelete, %A_ScriptDir%\log.txt
@@ -2030,19 +2121,21 @@ While (!ok:=FindText(ghostcapavatar[1],ghostcapavatar[2],ghostcapavatar[3],ghost
 				}
 c=0
 FileAppend, %CountNumb%`n, %A_ScriptDir%\logfound.txt
+updateiniby1("totalvisit", "score")
+updateiniby1("totalque", "score")
 log(Title2 " has found Ghost Cap at " CountNumb "...")
 return
-		
+
 
 
 MaxTime:
 
 			WaitingTime++
 			tooltip,
-			
+
 			return
-			
-			
+
+
 
 
 SlideUp:
@@ -2061,12 +2154,13 @@ return
 RefreshD:
 IniRead, kill , %A_ScriptDir%\pos.ini, Stats, kill:
 cKill := kill-prevkill
+score := score()
 IniRead, FarmState , %A_ScriptDir%\pos.ini, Backup, FarmState:
 GuiControl,2:, Counter, Total Kill(s) = %kill%
 GuiControl,2:, Counter2, Current Wave Kill(s) = %cKill%
 GuiControl,2:, CounterCard, Total Card(s) = %Card%
 GuiControl,2:, FarmState, FarmState = %FarmState%
-
+GuiControl,2:, CounterScore, Score = %score%
 
 
 return
@@ -2079,21 +2173,21 @@ autogetcard:
  Card++
    CoordMode, Mouse
    X:=ok.1.x, Y:=ok.1.y, Comment:=ok.1.id
-   ControlClick, x%x% y%y%, %Title%,, LEFT, 1, NA 
+   ControlClick, x%x% y%y%, %Title%,, LEFT, 1, NA
    sleep 1000
   }
-  
+
   if(ok:=FindText(599, 39, 989, 335, 0, 0, Getcard[5]))
  {
  Card++
    CoordMode, Mouse
    X:=ok.1.x-(533), Y:=ok.1.y, Comment:=ok.1.id
-   ControlClick, x%x% y%y%, %Title2%,, LEFT, 1, NA 
+   ControlClick, x%x% y%y%, %Title2%,, LEFT, 1, NA
    sleep 1000
   }
-  
+
   return
-  
+
 Window:
 WinMove, %Title%,,0,0, 533, 331
 WinMove, %Title2%,,533,0, 533, 331
@@ -2104,7 +2198,7 @@ WinMove, %Title6%,,0,331, 533, 331
 
 return
 
-ESC:: 
+ESC::
 WinGetPos, gui_x, gui_y,,, ahk_id %gui_id%
 IniWrite, x%gui_x% y%gui_y%,%A_ScriptDir%\pos.ini, window position, gui_position
 IniWrite, 1,%A_ScriptDir%\pos.ini, Backup, Stop:

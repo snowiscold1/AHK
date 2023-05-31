@@ -1,4 +1,4 @@
-;;things to do add random 
+;;things to do add random
 #SingleInstance Force
 char:= "backup2"
 #Include %A_ScriptDir%\botschmitzcfg.ini
@@ -50,16 +50,16 @@ while(!ok:=FindText(GHhallSlave[1], GHhallSlave[2], GHhallSlave[3], GHhallSlave[
 	if (WaitingTime=0) {
 				waitingtime++
 				SetTimer, MaxTime, 1000
-				}	
+				}
 	if (WaitingTime=3) {
 				 setTimer, MaxTime, off
-				 Tooltip, 
+				 Tooltip,
 				 WaitingTime=0
 				 goto Find
 				}
 }
 				setTimer, MaxTime, off
-				Tooltip, 
+				Tooltip,
 				WaitingTime=0
 	ControlClick, x334 y77, %Title4%,, LEFT, 1, NA ;chgechatmap
 	sleep 1000
@@ -71,18 +71,18 @@ FindText_BindWindow(Title4ID)
 				if (WaitingTime=0) {
 				waitingtime++
 				SetTimer, MaxTime, 1000
-				}	
+				}
 				if (WaitingTime=7) {
 				 setTimer, MaxTime, off
-				 Tooltip, 
+				 Tooltip,
 				 WaitingTime=0
 				 goto Find
 				}
-				 
+
  }
  {
 				setTimer, MaxTime, off
-				Tooltip, 
+				Tooltip,
 				WaitingTime=0
 				sleep 500
 				ControlClick, x440 y100, %Title4%,, LEFT, 1, NA  ; enterline
@@ -94,18 +94,18 @@ FindText_BindWindow(Title4ID)
  if (WaitingTime=0) {
 				waitingtime++
 				SetTimer, MaxTime, 1000
-				}	
-				
+				}
+
 				if (WaitingTime=7) {
 				 setTimer, MaxTime, off
-				 Tooltip, 
+				 Tooltip,
 				 WaitingTime=0
 				 goto changechannelXbutton
 				}
 }
 				setTimer, MaxTime, off
-				Tooltip, 
-				WaitingTime=0	
+				Tooltip,
+				WaitingTime=0
 
  {
 				CoordMode, Mouse
@@ -113,8 +113,8 @@ FindText_BindWindow(Title4ID)
 				ControlClick, x%x% y%y%, %Title4%,, LEFT, 1, NA
  }
  SetKeyDelay, 200
- 
-/*	if (jumpa=1) 
+
+/*	if (jumpa=1)
 	{
 		jumpa=0
 		Number++
@@ -129,11 +129,11 @@ FindText_BindWindow(Title4ID)
 				Number++
 				gosub countrycycle
 				CountNumb := % Country " "Number
-			}  
+			}
 		ControlSend, ,%Number%, %Title4%
 	}
 
-	else 
+	else
 	{
 	*/
 		;jumpa=0
@@ -147,7 +147,7 @@ FindText_BindWindow(Title4ID)
 			}
 				gosub shufflechannel
 				CountNumb := % Country " "Number
-			}  
+			}
 		ControlSend, ,%Number%, %Title4%
 	;}
 
@@ -164,18 +164,18 @@ if (WaitingTime=0) {
 				SetTimer, MaxTime, 1000
 				ControlClick, x239 y245, %Title4%,, LEFT, 1, NA ; open country list
 				sleep 500
-				}	
-				
+				}
+
 				if (WaitingTime=7) {
 				 setTimer, MaxTime, off
-				 Tooltip, 
+				 Tooltip,
 				 WaitingTime=0
 				 goto changechannelXbutton
 				}
 }
 				setTimer, MaxTime, off
-				Tooltip, 
-				WaitingTime=0	
+				Tooltip,
+				WaitingTime=0
 gosub %Country%
 
 
@@ -226,14 +226,14 @@ While (!ok:=FindText(skillbarjumpch[1],skillbarjumpch[2],skillbarjumpch[3],skill
 				if (WaitingTime=0) {
 				waitingtime++
 				SetTimer, MaxTime, 1000
-				}	
-				
+				}
+
 				if (WaitingTime=10) {
 				 setTimer, MaxTime, off
-				 Tooltip, 
+				 Tooltip,
 				 WaitingTime=0
 				 failjump++
-				
+
 				 if (failjump<5)
 				{
 					goto Find
@@ -247,7 +247,7 @@ While (!ok:=FindText(skillbarjumpch[1],skillbarjumpch[2],skillbarjumpch[3],skill
 				}
 }
 				setTimer, MaxTime, off
-				Tooltip, 
+				Tooltip,
 				WaitingTime=0
 				failjump=0
 While (ok:=FindText(skillbarjumpch[1],skillbarjumpch[2],skillbarjumpch[3],skillbarjumpch[4], 0, 0, skillbarjumpch[5]))
@@ -267,7 +267,7 @@ checkavatarexist:
 if (jumpa == 1) {
 gosub checkchanges
 }
-else 
+else
 {
 	sleep 4000
 }
@@ -276,18 +276,19 @@ While (!ok:=FindText(atkcd[1],atkcd[2],atkcd[3],atkcd[4], 0, 0, atkcd[5]))
 				waitingtime++
 				tooltip,
 				sleep 1000
-				
+
 				if (WaitingTime>6) {
 				 setTimer, MaxTime, off
-				 Tooltip, 
+				 Tooltip,
 				 WaitingTime=0
 				 gosub scamghostcap
-random,randX, %spawnX% , %spawnX%+1
-random,randY, %spawnY%, %spawny%+1
+				random,randX, %spawnX% , %spawnX%+1
+				random,randY, %spawnY%, %spawny%+1
 				ControlClick, x%randX% y%randY%, %Title4%,, LEFT, 1, NA ;location spot btm right
 				nomob++
 				jumpa = 0
 				log(Title4 " is unable to find King Schmitz at " CountNumb " ...")
+				updateiniby1("totalvisit", "score")
 				gosub openmapslave
 				goto Find
 				}
@@ -295,16 +296,18 @@ random,randY, %spawnY%, %spawny%+1
 
 {
 				setTimer, MaxTime, off
-				Tooltip, 
+				Tooltip,
 				WaitingTime=0
 				nomob = 0
 				jumpa = 1
 				totalkill++
 				log(Title4 " has found King Schmitz at " CountNumb " ...")
+				FileAppend, %CountNumb%`n, %A_ScriptDir%\logfoundbackup.txt
+				updateiniby1("totalvisit", "score")
+				updateiniby1("totalque", "score")
 				gosub movetilstop
 				DetectHiddenWindows, On
 				SetTitleMatchMode, 2
-				FileAppend, %CountNumb%`n, %A_ScriptDir%\logfoundbackup.txt
 				;sleep 1000 ; killtime
 				;ControlClick, x370 y305, %Title4%,, LEFT, 1, NA ; kill
 				;sleep 3000
@@ -326,12 +329,12 @@ FindText_BindWindow(Title4ID)
 			 sleep 1000
 			 if (WaitingTime=9) {
 				 setTimer, MaxTime, off
-				 Tooltip, 
+				 Tooltip,
 				 WaitingTime=0
-				 
+
 			 if(ok:=FindText(fullmob[1], fullmob[2], fullmob[3], fullmob[4], 0, 0, fullmob[5]))
 				{
-				
+
 					if (kenascroll = 0){
 						tooltip, scrolldown
 						sleep 1000
@@ -343,35 +346,36 @@ FindText_BindWindow(Title4ID)
 				}
 
 			 if(ok:=FindText(closemob[1], closemob[2], closemob[3], closemob[4], 0, 0, closemob[5]))
-			 {		
+			 {
 				CoordMode, Mouse
 				X:=ok.1.x-(1066), Y:=ok.1.y-(331), Comment:=ok.1.id
 				ControlClick, x%x% y%y%, %Title4%,, LEFT, 1, NA
 				sleep 1000
 			 }
-				
+
 random,randX, %spawnX% , %spawnX%+1
 random,randY, %spawnY%, %spawny%+1
 			ControlClick, x%randX% y%randY%, %Title4%,, LEFT, 1, NA ;location spot btm right
 			nomob++
 			jumpa = 0
 			log(Title4 " is unable to find King Schmitz at " CountNumb " ...")
-			 if (nomob = 5)
+			updateiniby1("totalvisit", "score")
+			if (nomob = 5)
 			{
 				gosub waitnextspawn
-				
-				
+
+
 			}
 			gosub openmapslave
 			goto Find
 			 }
 }
-	
-	
-	
-{	
+
+
+
+{
 			setTimer, MaxTime, off
-			Tooltip, 
+			Tooltip,
 			WaitingTime=0
 			CoordMode, Mouse
 			X:=ok.1.x-(1066), Y:=ok.1.y-(331), Comment:=ok.1.id
@@ -383,6 +387,8 @@ random,randY, %spawnY%, %spawny%+1
 			jumpa = 1
 			totalkill++
 			log(Title4 " has found King Schmitz at " CountNumb " ...")
+			updateiniby1("totalvisit", "score")
+			updateiniby1("totalque", "score")
 			while(ok:=FindText(closemob[1], closemob[2], closemob[3], closemob[4], 0, 0, closemob[5]))
 {
 				CoordMode, Mouse
@@ -401,60 +407,60 @@ return
 
 countrycycle:
 
-if (Country = "EN") 
+if (Country = "EN")
 {
 
-	if(Number>12) 
+	if(Number>12)
 	{
 		gosub nextcountry
 	}
-	
+
 }
 
-if (Country = "TH") 
+if (Country = "TH")
 {
-	if(Number>42) 
+	if(Number>42)
 	{
 		gosub nextcountry
 	}
-	
+
 }
 
-if (Country = "PH") 
+if (Country = "PH")
 {
-	if(Number>25) 
+	if(Number>25)
 	{
 		gosub nextcountry
 	}
-	
+
 }
 
 
-if (Country = "ID") 
+if (Country = "ID")
 {
-	if(Number>18) 
+	if(Number>18)
 	{
 		gosub nextcountry
 	}
-	
+
 }
 
-if (Country = "CN") 
+if (Country = "CN")
 {
-	if(Number>1) 
+	if(Number>1)
 	{
 		gosub nextcountry
 	}
-	
+
 }
 
-if (Country = "VN") 
+if (Country = "VN")
 {
-	if(Number>1) 
+	if(Number>1)
 	{
 		gosub nextcountry
 	}
-	
+
 }
 
 return
@@ -493,8 +499,10 @@ if (ErrorLevel=1)
 if (logfoundsize=0)
 	FileAppend, %CountNumb%`n, %A_ScriptDir%\logfound.txt
 else
-	TF_InsertLine("!logfound.txt",2,2,CountNumb) 
+	TF_InsertLine("!logfound.txt",2,2,CountNumb)
 log(Title4 " has found Ghost Cap at " CountNumb "...")
+updateiniby1("totalvisit", "score")
+updateiniby1("totalque", "score")
 return
 
 
@@ -518,7 +526,7 @@ EnvAdd, target, 1, d
 
 EnvSub, target, %A_Now%, Seconds.
 
-nextspawn := target * 1000 
+nextspawn := target * 1000
 nextspawninmin := (nextspawn/1000)/60
 
 
@@ -565,34 +573,34 @@ random, NextCount, 1, 6
 x := % CountryAvailable[NextCount]
 Country = % x
 
-if (Country = "EN") 
+if (Country = "EN")
 {
 	random, Number, 1, 12
 }
 
-if (Country = "TH") 
+if (Country = "TH")
 {
 	random, Number, 1, 42
 }
 
-if (Country = "PH") 
+if (Country = "PH")
 {
-	random, Number, 1, 25	
-	
+	random, Number, 1, 25
+
 }
 
 
-if (Country = "ID") 
+if (Country = "ID")
 {
-	random, Number, 1, 18	
+	random, Number, 1, 18
 }
 
-if (Country = "CN") 
+if (Country = "CN")
 {
 	random, Number, 1, 1
 }
 
-if (Country = "VN") 
+if (Country = "VN")
 {
 	random, Number, 1, 1
 }
@@ -610,6 +618,18 @@ ObjIndexOf(obj, item, case_sensitive:=false)
 	}
 }
 
+updateiniby1(var, section) {
+    IniRead, superfarmstate , %A_ScriptDir%\pos.ini, Backup, superfarmstate:
+    if (superfarmstate == 0) {
+    ; Read the current value from pos.ini
+    IniRead, currentValue, pos.ini, %section%, %var%:
+    ; Increment the value by 1
+    newvalue := currentValue + 1
+    ; Write the updated value back to pos.ini
+    IniWrite, %newvalue%, pos.ini, %section%, %var%:
+    }
+    return
+}
 
 InFile(CountNumb)
 {
@@ -620,7 +640,7 @@ Loop, Read, %A_ScriptDir%\log.txt
     ++i
 }
 If (i>98){
-  
+
 gosub logfullgoalt
 
 
@@ -628,7 +648,7 @@ gosub logfullgoalt
         ;Means 13 non empty lines in the file
         ;Indicating each value of rand from 0 to 12 has been generated once
         ;No new value can be generated, hence delete
-		
+
 Loop, Read, %A_ScriptDir%\log.txt
 {
     If (A_LoopReadLine=CountNumb){
@@ -640,13 +660,13 @@ Loop, Read, %A_ScriptDir%\log.txt
 FileAppend, %CountNumb%`n, %A_ScriptDir%\log.txt
 return 0
 }
- 
+
  FilePrepend(filename, atext) {
 	FileRead fileContent, % filename
 	FileDelete % filename
 	FileAppend % atext . "`n" . filecontent, % filename
 }
- 
+
 
 ; Get the RGB value of all the points of the picture to the array
 FindText_ShowArea(x:="", y:="", Active_width:="", Active_height:="")
@@ -764,11 +784,11 @@ ComObjError(false)
 	  "content": "%msg%"
 	}
 	) ;Use https://leovoel.github.io/embed-visualizer/ to generate above webhook code
-	
+
 	WebRequest := ComObjCreate("WinHttp.WinHttpRequest.5.1")
 	WebRequest.Open("POST", url, false)
 	WebRequest.SetRequestHeader("Content-Type", "application/json")
-	WebRequest.Send(postdata)  
+	WebRequest.Send(postdata)
 
 
 
@@ -778,7 +798,7 @@ resetguildch:
 log(Title4 " is entering guildhall to reset gui")
 
 if(ok:=FindText(worldmapslave[1], worldmapslave[2], worldmapslave[3], worldmapslave[4], 0, 0, worldmapslave[5]))
-{	
+{
 ControlClick, x498 y75, %Title4%,, LEFT, 1, NA ;map
 sleep 1000
 }
@@ -823,11 +843,11 @@ while(ok:=FindText(confirmleave[1], confirmleave[2], confirmleave[3], confirmlea
 
 sleep 10000
 return
- 
+
 openmapslave:
 FindText_BindWindow(Title4ID)
 while(!ok:=FindText(worldmapslave[1], worldmapslave[2], worldmapslave[3], worldmapslave[4], 0, 0, worldmapslave[5]))
-{	
+{
 ControlClick, x498 y75, %Title4%,, LEFT, 1, NA
 sleep 1000
 }
@@ -838,7 +858,7 @@ MaxTime:
 			WaitingTime++
 			tooltip,
 			return
-			
+
 
 checkchanges:
 FindText_BindWindow(Title4ID)
@@ -861,7 +881,7 @@ loop, {
 
 loop, {
 	cou++
-	
+
   pic1:=GetPicArr(1229,604,20,20)
   Sleep, 2000
   pic2:=GetPicArr(1229,604,20,20)
@@ -876,7 +896,7 @@ loop, {
 }
 
 return
-  
+
 
 movetilstop:
 ControlClick, %tauntcoord1x% %tauntcoord1y%, %Title4%,, LEFT, 1, NA ;location far btm right
@@ -932,7 +952,7 @@ logfullgoalt:
 
 while(ok:=FindText(changechannelXbutton[1], changechannelXbutton[2], changechannelXbutton[3], changechannelXbutton[4], 0, 0, changechannelXbutton[5]))
 {
-	
+
 	ControlClick, x477 y52, %Title4%,, LEFT, 1, NA
 	sleep 1000
 }
@@ -955,7 +975,7 @@ EnvAdd, target, 1, d
 
 EnvSub, target, %A_Now%, Seconds.
 
-nextspawn := target * 1000 
+nextspawn := target * 1000
 nextspawninmin := (nextspawn/1000)/60
 
 	sleep % nextspawn

@@ -21,7 +21,7 @@ return
 GenerateCoordinate(var, title) {
     global
     pict := var
-    WinGetPos, x, y, w, h, %Title1%
+    WinGetPos, x, y, w, h, %Title1% ; the title for first window 0,0
     WinGetPos, x2, y2, w2, h2, %title%
     offsetX := x2 - x
     offsetY := y2 - y

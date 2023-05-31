@@ -45,18 +45,18 @@ FindText_BindWindow(TitleID)
 				if (WaitingTime=0) {
 				waitingtime++
 				SetTimer, MaxTime, 1000
-				}	
+				}
 				if (WaitingTime=3) {
 				 setTimer, MaxTime, off
-				 Tooltip, 
+				 Tooltip,
 				 WaitingTime=0
 				 goto changeID1
 				}
-				 
+
  }
  {
 				setTimer, MaxTime, off
-				Tooltip, 
+				Tooltip,
 				WaitingTime=0
 				sleep 500
 				ControlClick, x440 y100, %Title%,, LEFT, 1, NA  ; enterline
@@ -68,29 +68,29 @@ FindText_BindWindow(TitleID)
  if (WaitingTime=0) {
 				waitingtime++
 				SetTimer, MaxTime, 1000
-				}	
-				
+				}
+
 				if (WaitingTime=3) {
 				 setTimer, MaxTime, off
-				 Tooltip, 
+				 Tooltip,
 				 WaitingTime=0
 				 goto changechannelXbutton
 				}
 }
 				setTimer, MaxTime, off
-				Tooltip, 
-				WaitingTime=0	
+				Tooltip,
+				WaitingTime=0
 
  {
 				CoordMode, Mouse
 				X:=ok.1.x, Y:=ok.1.y, Comment:=ok.1.id
 				ControlClick, x%x% y%y%, %Title%,, LEFT, 1, NA
  }
- 
+
 
 SetKeyDelay, 200
 ControlSend, ,1, %Title%
- 
+
 sleep 500
 ControlClick, x496 y306, %Title%,, LEFT, 1, NA
 sleep 500
@@ -102,18 +102,18 @@ While (!ok:=FindText(CountryList[1], CountryList[2], CountryList[3], CountryList
 if (WaitingTime=0) {
 				waitingtime++
 				SetTimer, MaxTime, 1000
-				}	
-				
+				}
+
 				if (WaitingTime=3) {
 				 setTimer, MaxTime, off
-				 Tooltip, 
+				 Tooltip,
 				 WaitingTime=0
 				 goto changechannelXbutton
 				}
 }
 				setTimer, MaxTime, off
-				Tooltip, 
-				WaitingTime=0	
+				Tooltip,
+				WaitingTime=0
 
 gosub ID
 sleep 500
@@ -191,7 +191,7 @@ While(ok:=FindText(MusicboxLocWorld[1], MusicboxLocWorld[2], MusicboxLocWorld[3]
 		CoordMode, Mouse
 		X:=ok.1.x, Y:=ok.1.y, Comment:=ok.1.id
 		ControlClick, x%x% y%y%, %Title%,, LEFT, 1, NA
-		sleep 2000		
+		sleep 2000
 }
 
 FindText_BindWindow(TitleID)
@@ -208,14 +208,14 @@ While(ok:=FindText(MusicboxRequest[1], MusicboxRequest[2], MusicboxRequest[3], M
 
 gosub waitnextspawn
 
-musiccounter:		
+musiccounter:
 		IniRead, prevamt , %A_ScriptDir%\pos.ini, Music, prevamt:
 		startmusic := A_TickCount
 		sleep % 58min
 		endmusic := floor(((A_TickCount - startmusic)/1000)/60)
 		prevamt += %endmusic%
 		IniWrite, %prevamt%,%A_ScriptDir%\pos.ini, Music, prevamt:
-		
+
 		if(ok:=FindText(MusicboxRequest[1], MusicboxRequest[2], MusicboxRequest[3], MusicboxRequest[4], 0, 0, MusicboxRequest[5]))
 	{
 		ControlClick, x476 y50, %Title%,, LEFT, 1, NA
@@ -245,7 +245,7 @@ while(!ok:=FindText(GHhallMain[1], GHhallMain[2], GHhallMain[3], GHhallMain[4], 
 {
 	CoordMode, Mouse
 	X:=ok.1.x, Y:=ok.1.y, Comment:=ok.1.id
-	ControlClick, x%x% y%y%, %Title%,, LEFT, 1, NA 
+	ControlClick, x%x% y%y%, %Title%,, LEFT, 1, NA
 	sleep 1000
 }
 random,randX, %spawnX% , %spawnX%+1
@@ -282,7 +282,7 @@ EnvAdd, target, 1, d
 
 EnvSub, target, %A_Now%, Seconds.
 
-nextspawn := target * 1000 
+nextspawn := target * 1000
 nextspawninmin := (nextspawn/1000)/60
 
 58min := nextspawn - 120000
@@ -292,7 +292,7 @@ MaxTime:
 			WaitingTime++
 			tooltip, %WaitingTime%
 			return
-			
+
 SlideUp:
 CoordMode,Mouse, Screen
 Click, 298,427, Down
@@ -303,31 +303,25 @@ Click, 300, 185, Up
 sleep 500
 return
 
+
 openmap:
+FindText_BindWindow(TitleID)
 while(!ok:=FindText(worldmap[1], worldmap[2], worldmap[3], worldmap[4], 0, 0, worldmap[5]))
-{	
+{
 ControlClick, x498 y75, %Title%,, LEFT, 1, NA
 sleep 1000
 }
 return
- 
-openmaptp:
-if(!ok:=FindText(821, 215, 871, 247, 0, 0, worldmap[5]))
-{	
-ControlClick, x498 y75, %Title2%,, LEFT, 1, NA
-sleep 100
-}
-return
- 
- log(msg){
-	
+
+log(msg){
+
 	global
 	Critical, On
 	sendError(msg)
-	FormatTime, TimeString, A_Now, yyyyMMdd HH:mm:ss  ; 
+	FormatTime, TimeString, A_Now, yyyyMMdd HH:mm:ss  ;
 	controlgettext, Console, Edit2, Fern Bot ahk_class AutoHotkeyGUI
-	
-	static oArrayText := [] 
+
+	static oArrayText := []
 	Loop, parse, Console, `n, `r  ; Specifying `n prior to `r allows both Windows and Unix files to be parsed.
 {
 	i++
@@ -338,16 +332,16 @@ return
 		break
 }
 
-	str := "" 
+	str := ""
 	for each, line in oArrayText
 	{
 		If (str <> "") ; str is not empty, so add a line feed
 		str .= "`r`n"
 		str .= line
 	}
-	
+
 	controlsettext, Edit2, %TimeString% - %msg%`r`n%str%, Fern Bot ahk_class AutoHotkeyGUI
-	
+
 	if oArrayText.MinIndex() != ""  ; Not empty.
     oArrayText.Delete(oArrayText.MinIndex(), oArrayText.MaxIndex())
 	Critical, Off
@@ -365,11 +359,11 @@ sendError(msg){
 	  "content": "%msg%"
 	}
 	) ;Use https://leovoel.github.io/embed-visualizer/ to generate above webhook code
-	
+
 	WebRequest := ComObjCreate("WinHttp.WinHttpRequest.5.1")
 	WebRequest.Open("POST", url, false)
 	WebRequest.SetRequestHeader("Content-Type", "application/json")
-	WebRequest.Send(postdata)  
+	WebRequest.Send(postdata)
 }
 catch e {
 	return e.message

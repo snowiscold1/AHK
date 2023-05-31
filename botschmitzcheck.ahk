@@ -43,18 +43,18 @@ if FileExist("logfound.txt") {
 		sleep 1000
 		goto begin
 	}
-		
-		
-	
+
+
+
 	try {
 		if FileExist("logfound.txt") {
 	if CountNumb=
-		TF_RemoveBlankLines("!logfound.txt",1,1) 
+		TF_RemoveBlankLines("!logfound.txt",1,1)
 	if(CountNumb=oldchannel){
 		log("Same channel detected, skip")
 		TF_RemoveLines("!logfound.txt",1,1) ; removes
-		CountNumb := TF_ReadLines("logfound.txt",1,1,1)	
-	}		
+		CountNumb := TF_ReadLines("logfound.txt",1,1,1)
+	}
 		}
 	}
 		catch e {
@@ -68,12 +68,12 @@ if FileExist("logfound.txt") {
 	}
 	else{
 	IniRead, oldfarmstate , %A_ScriptDir%\pos.ini, Backup, farmstate:
-	
+
 	getfarmstate()
 
 
 	if (oldfarmstate!=farmstate){
-		IniWrite, %farmstate%,%A_ScriptDir%\pos.ini, Backup, FarmState:	
+		IniWrite, %farmstate%,%A_ScriptDir%\pos.ini, Backup, FarmState:
 		gosub spawnlocation
 		sleep 10000
 		}
@@ -99,9 +99,9 @@ FindText_BindWindow(TitleID)
 while(!ok:=FindText(GHhallMain[1], GHhallMain[2], GHhallMain[3], GHhallMain[4], 0, 0, GHhallMain[5]))
 {
 				waitingtime++
-				tooltip, 
+				tooltip,
 				sleep 1000
-				
+
 	if (WaitingTime>3) and (repairMAIN != 1) {
 		repairMAIN = 1
 		ControlClick, x306 y232, %Title%,, LEFT, 1, NA ; worldmap
@@ -114,25 +114,25 @@ while(!ok:=FindText(GHhallMain[1], GHhallMain[2], GHhallMain[3], GHhallMain[4], 
 		sleep 1000
 		ControlClick, x271 y240, %Title%,, LEFT, 1, NA ; map pinpoint
 		}
-		
+
 	if (WaitingTime>180) and (repairMAIN = 1) {
 		repairMAIN = 0
 		tooltip,
 		waitingtime=0
 	}
-		
-	
+
+
 		goto GHhallMain
-				
+
 }
-		
-	
+
+
 
 				repairMAIN = 0
 				tooltip,
 				waitingtime=0
-				gosub spawnlocation	
-	
+				gosub spawnlocation
+
 	ControlClick, x334 y77, %Title%,, LEFT, 1, NA ;chgechatmap
 	;sleep 1000
 EnterLine:
@@ -144,16 +144,16 @@ FindText_BindWindow(TitleID)
 				waitingtime++
 				tooltip, %waitingtime%
 				sleep 1000
-				
+
 				if (WaitingTime>3) {
-				 Tooltip, 
+				 Tooltip,
 				 WaitingTime=0
 				 goto GHhallMain
 				}
-				 
+
  }
  {
-				Tooltip, 
+				Tooltip,
 				WaitingTime=0
 				sleep 500
 				ControlClick, x440 y100, %Title%,, LEFT, 1, NA  ; enterline
@@ -165,28 +165,28 @@ FindText_BindWindow(TitleID)
 				waitingtime++
 				tooltip, %waitingtime%
 				sleep 1000
-				
+
 				if (WaitingTime>3) {
-				 Tooltip, 
+				 Tooltip,
 				 WaitingTime=0
 				 goto changechannelXbutton
 				}
 }
 
-				Tooltip, 
-				WaitingTime=0	
+				Tooltip,
+				WaitingTime=0
 
  {
 				CoordMode, Mouse
 				X:=ok.1.x, Y:=ok.1.y, Comment:=ok.1.id
 				ControlClick, x%x% y%y%, %Title%,, LEFT, 1, NA
  }
- 
+
 Country:= SubStr(CountNumb, 1, 2)
 Number:= SubStr(CountNumb, 4, 4)
 SetKeyDelay, 100
 ControlSend, ,%Number%, %Title%
- 
+
 sleep 100
 ControlClick, x496 y306, %Title%,, LEFT, 1, NA
 sleep 100
@@ -200,20 +200,20 @@ While (!ok:=FindText(CountryList[1], CountryList[2], CountryList[3], CountryList
 				waitingtime++
 				tooltip, %waitingtime%
 				sleep 1000
-				
+
 				if (WaitingTime>3) {
-				 Tooltip, 
+				 Tooltip,
 				 WaitingTime=0
 				 countryL++
 				 if (CountryL > 2)
 					{
 					try {
 					if (switchfarm=1){
-						TF_RemoveLines("!logfoundbackup.txt",1,1) ; removes 
+						TF_RemoveLines("!logfoundbackup.txt",1,1) ; removes
 						}
 					else {
 						if FileExist("logfound.txt") {
-						TF_RemoveLines("!logfound.txt",1,1) ; removes 
+						TF_RemoveLines("!logfound.txt",1,1) ; removes
 						}
 						}
 					}
@@ -225,11 +225,11 @@ While (!ok:=FindText(CountryList[1], CountryList[2], CountryList[3], CountryList
 					}
 				 goto countryL
 				}
-				
-				
+
+
 }
 
-				Tooltip, 
+				Tooltip,
 				WaitingTime=0
 
 gosub %Country%
@@ -278,11 +278,11 @@ While (!ok:=FindText(skillbarjumpch[1],skillbarjumpch[2],skillbarjumpch[3],skill
 				{
 					try {
 						if (switchfarm=1){
-						TF_RemoveLines("!logfoundbackup.txt",1,1) ; removes 
+						TF_RemoveLines("!logfoundbackup.txt",1,1) ; removes
 						}
 					else {
 						if FileExist("logfound.txt") {
-						TF_RemoveLines("!logfound.txt",1,1) ; removes 
+						TF_RemoveLines("!logfound.txt",1,1) ; removes
 						}
 						}
 					}
@@ -292,26 +292,26 @@ While (!ok:=FindText(skillbarjumpch[1],skillbarjumpch[2],skillbarjumpch[3],skill
 					}
 
 					goto checkavatarexist
-				}				
+				}
 				sleep 1000
-				
+
 				if (WaitingTime>7) {
-				Tooltip, 
+				Tooltip,
 				 WaitingTime=0
 				 failjump++
-				 if (failjump<3)
-				{
-					goto GHhallMain
-				}
-				 if (failjump>1)
+				 ;~ if (failjump<3)
+				;~ {
+					;~ goto GHhallMain
+				;~ }
+				 if (failjump>0)
 				{
 					try {
-						if (switchfarm=1){
-						TF_RemoveLines("!logfoundbackup.txt",1,1) ; removes 
+						if (switchfarm==1){
+						TF_RemoveLines("!logfoundbackup.txt",1,1) ; removes
 						}
 					else {
 						if FileExist("logfound.txt") {
-						TF_RemoveLines("!logfound.txt",1,1) ; removes 
+						TF_RemoveLines("!logfound.txt",1,1) ; removes
 						}
 						}
 					}
@@ -328,16 +328,16 @@ While (ok:=FindText(skillbarjumpch[1],skillbarjumpch[2],skillbarjumpch[3],skillb
  {
 }
 
-				Tooltip, 
+				Tooltip,
 				WaitingTime=0
 				log(Title " is now in " CountNumb)
 				IniWrite, %CountNumb%,%A_ScriptDir%\pos.ini, Stats, currentchannel:
 					if (switchfarm=1){
-						TF_RemoveLines("!logfoundbackup.txt",1,1) ; removes 
+						TF_RemoveLines("!logfoundbackup.txt",1,1) ; removes
 						}
 					else {
 						if FileExist("logfound.txt") {
-						TF_RemoveLines("!logfound.txt",1,1) ; removes 
+						TF_RemoveLines("!logfound.txt",1,1) ; removes
 						}
 						}
 
@@ -350,42 +350,44 @@ checkavatarexist:
 
 While (!ok:=FindText(ghostcapavatar[1],ghostcapavatar[2],ghostcapavatar[3],ghostcapavatar[4], 0, 0, ghostcapavatar[5]))
  {
- 
+
 				waitingtime++
 				tooltip, %waitingtime%
 				sleep 1000
-				
+
 				if (WaitingTime>7) {
-				 Tooltip, 
+				 Tooltip,
 				 WaitingTime=0
 				 log(Title " is unable to find Ghost Captain at " CountNumb "...")
+				 updateiniminus1("totalque","score")
 				gosub spawnlocation
 				;sleep 1500
-				
+
 				Reload
 				}
 }
 While (ok:=FindText(ghostcapavatar[1],ghostcapavatar[2],ghostcapavatar[3],ghostcapavatar[4], 0, 0, ghostcapavatar[5]))
- 
+
 {
 				waitingtime++
 				tooltip, %waitingtime%
 				sleep 1000
-				
+
 				if (WaitingTime>15) {
-				 Tooltip, 
+				 Tooltip,
 				 WaitingTime=0
 				 log(Title " is unable to kill Ghost Captain at " CountNumb "...")
 				gosub spawnlocation
 				;sleep 1500
-				
+
 				Reload
 				}
 }
 {
-				Tooltip, 
+				Tooltip,
 				WaitingTime=0
 				kill++
+				updateiniminus1("totalque","score")
 				log(Title " is attacking Ghost Captain at " CountNumb "...")
 				IniWrite, %kill%,%A_ScriptDir%\pos.ini, Stats, kill:
 
@@ -408,11 +410,11 @@ sleep 2000
 				waitingtime++
 				tooltip, %waitingtime%
 				sleep 1000
-				
+
 			 if (WaitingTime>7) {
-				 Tooltip, 
+				 Tooltip,
 				 WaitingTime=0
-				
+
 if(ok:=FindText(closemob[1], closemob[2], closemob[3], closemob[4], 0, 0, closemob[5]))
 {
 				CoordMode, Mouse
@@ -420,7 +422,8 @@ if(ok:=FindText(closemob[1], closemob[2], closemob[3], closemob[4], 0, 0, closem
 				ControlClick, x%x% y%y%, %Title%,, LEFT, 1, NA
 				sleep 1000
 }
-log(Title " is unable to find Ghost Captain at " CountNumb "...")				 
+log(Title " is unable to find Ghost Captain at " CountNumb "...")
+updateiniminus1("totalque","score")
 gosub spawnlocation
 sleep 1500
 
@@ -430,10 +433,11 @@ Reload
 
 
 	{
-		
-				 Tooltip, 
+
+				 Tooltip,
 				 WaitingTime=0
 				 kill++
+				 updateiniminus1("totalque","score")
 				 log(Title " is attacking Ghost Captain at " CountNumb "...")
 				 IniWrite, %kill%,%A_ScriptDir%\pos.ini, Stats, kill:
 			CoordMode, Mouse
@@ -448,19 +452,19 @@ Reload
 				waitingtime++
 				tooltip, %waitingtime%
 				sleep 1000
-				
+
 				if (WaitingTime>30) {
 					kill--
 					IniWrite, %kill%,%A_ScriptDir%\pos.ini, Stats, kill:
-					Tooltip, 
+					Tooltip,
 					WaitingTime=0
-					
+
 					reload
 				}
 
 				}
-			
-				Tooltip, 
+
+				Tooltip,
 				WaitingTime=0
 
 if(ok:=FindText(closemob[1], closemob[2], closemob[3], closemob[4], 0, 0, closemob[5]))
@@ -471,7 +475,7 @@ if(ok:=FindText(closemob[1], closemob[2], closemob[3], closemob[4], 0, 0, closem
 				sleep 1000
 }
 }
-	
+
 looting:
 
 log(Title " is looting at " CountNumb "...")
@@ -484,16 +488,16 @@ reload
     ;~ pic2:=GetPicArr(3, 274, 70, 35)
     ;~ if ComparePicArr(pic1, pic2, n:=0.001)
     ;~ {
-   
+
       ;~ CoordMode, tooltip
       ;~ tooltip, %cou%,0,0
      ;~ if (cou>1){
   	;~ ;gosub spawnlocation
   		;~ ;sleep 1500
-  		
+
   		;~ reload
         ;~ }
-  	
+
     ;~ }
     ;~ else
     ;~ {
@@ -506,7 +510,7 @@ reload
             ;~ tooltip, %cou%,0,0
             ;~ if (cou>1){
   			;~ ;gosub spawnlocation
-  			
+
               ;~ ;reload
             ;~ }
           ;~ }
@@ -514,20 +518,20 @@ reload
           ;~ {
   				;~ ;gosub spawnlocation
   				;~ ;sleep 1500
-  				
+
             ;~ reload
-  	
+
           ;~ }
-      
-      
-  
+
+
+
     ;~ }
     ;~ pic1:=pic2
-  
+
   ;~ }
   ;~ reload
   return
- 
+
 
 
 
@@ -535,7 +539,7 @@ reload
 resetfarmstate:
 if (farmstate=1) or (farmstate=2)
 {
-	
+
 if FileExist("logfound.txt") {
 	CountNumb := TF_ReadLines("logfound.txt",1,1,1)
 	if !ErrorLevel
@@ -545,7 +549,7 @@ random,randY, %spawnY%, %spawny%+1
 	ControlClick, x%randX% y%randY%, %Title%,, LEFT, 1, NA ;location spot btm right
 	IniWrite, 0,%A_ScriptDir%\pos.ini, Backup, FarmState:
 	}
-	
+
 
 
 }
@@ -557,7 +561,7 @@ if (switchfarm=1) {
 
 getfarmstate()
 if (oldfarmstate!=farmstate){
-	IniWrite, %farmstate%,%A_ScriptDir%\pos.ini, Backup, FarmState:	
+	IniWrite, %farmstate%,%A_ScriptDir%\pos.ini, Backup, FarmState:
 	gosub spawnlocation
 	sleep 10000
 }
@@ -603,7 +607,7 @@ if FileExist("logfoundbackup.txt") {
 
 	getfarmstate()
 	if (oldfarmstate!=farmstate){
-		IniWrite, %farmstate%,%A_ScriptDir%\pos.ini, Backup, FarmState:	
+		IniWrite, %farmstate%,%A_ScriptDir%\pos.ini, Backup, FarmState:
 		gosub spawnlocation
 		sleep 10000
 		}
@@ -611,7 +615,7 @@ if FileExist("logfoundbackup.txt") {
 }
 
 }
-	
+
 return
 
 MaxTime:
@@ -622,7 +626,7 @@ MaxTime:
 openmap:
 FindText_BindWindow(TitleID)
 while(!ok:=FindText(worldmap[1], worldmap[2], worldmap[3], worldmap[4], 0, 0, worldmap[5]))
-{	
+{
 ControlClick, x498 y75, %Title%,, LEFT, 1, NA
 sleep 1000
 }
@@ -633,7 +637,7 @@ resetguildch:
 log(Title " is entering guildhall to reset gui")
 
 if(ok:=FindText(worldmap[1], worldmap[2], worldmap[3], worldmap[4], 0, 0, worldmap[5]))
-{	
+{
 ControlClick, x498 y75, %Title%,, LEFT, 1, NA ;map
 sleep 1000
 }
@@ -738,9 +742,18 @@ while(ok:=FindText(PH[1], PH[2], PH[3], PH[4], 0, 0, PH[5]))
 	ControlClick, x%x% y%y%, %Title%,, LEFT, 1, NA
 }
 return
- 
+
 F5:: ExitApp
 
+updateiniminus1(var, section) {
+    ; Read the current value from pos.ini
+    IniRead, currentValue, pos.ini, %section%, %var%:
+    ; Increment the value by 1
+    newvalue := currentValue - 1
+    ; Write the updated value back to pos.ini
+    IniWrite, %newvalue%, pos.ini, %section%, %var%:
+    return
+}
 
 ; Get the RGB value of all the points of the picture to the array
 FindText_ShowArea(x:="", y:="", Active_width:="", Active_height:="")
@@ -896,11 +909,11 @@ ComObjError(false)
 	  "content": "%msg%"
 	}
 	) ;Use https://leovoel.github.io/embed-visualizer/ to generate above webhook code
-	
+
 	WebRequest := ComObjCreate("WinHttp.WinHttpRequest.5.1")
 	WebRequest.Open("POST", url, false)
 	WebRequest.SetRequestHeader("Content-Type", "application/json")
-	WebRequest.Send(postdata)  
+	WebRequest.Send(postdata)
 }
 
 
